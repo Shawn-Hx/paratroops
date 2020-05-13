@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.paratroops.entity.Soldier;
 
-public interface troopUtils {
+public interface TroopUtils {
     /**
      * 跳伞前给同一队伍的所有士兵分发其所有队友的公钥
      * @param soldiers 同一队伍的士兵

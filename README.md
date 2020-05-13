@@ -24,7 +24,7 @@ java -cp target/paratroops-1.0-SNAPSHOT.jar com.paratroops.App
 
 - util
   - CipherKey: 密钥封装类
-  - CipherUtils: 密码学算法封装
-  - troopsUtils: 部队功能封装类（密钥分发、身份认证、军衔比较、开箱）
+  - CipherUtils: 密码学算法封装（RSA公钥私钥生成、加密、解密）
+  - TroopsUtils: 部队功能封装类（密钥分发、身份认证、军衔比较、开箱）
 
 - App: 主类，暂时为空
