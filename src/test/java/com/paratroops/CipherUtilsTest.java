@@ -8,8 +8,9 @@ import junit.framework.TestCase;
 
 public class CipherUtilsTest extends TestCase {
 
+    public CipherUtils cipher = new CipherUtilsImpl();
+
     public void testGenKeyPair() {
-        CipherUtils cipher = new CipherUtilsImpl();
         CipherKey[] key = cipher.genKeyPair();
 
         assertNotNull(key);
@@ -18,7 +19,6 @@ public class CipherUtilsTest extends TestCase {
     }
 
     public void testEncryptAndDecrypt() {
-        CipherUtils cipher = new CipherUtilsImpl();
         CipherKey[] key = cipher.genKeyPair();
 
         String plainText = "Hello world!";
@@ -27,6 +27,11 @@ public class CipherUtilsTest extends TestCase {
         String result = new String(decrypted);
 
         assertEquals(plainText, result);
+    }
+
+    public void testGenBytes() {
+        byte[] bytes = cipher.genBytes();
+        assertNotNull(bytes);
     }
 
 }

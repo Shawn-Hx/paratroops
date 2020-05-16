@@ -53,7 +53,7 @@ public class CipherUtilsImpl implements CipherUtils {
         for (byte b : plainText) {
             int value = Byte.toUnsignedInt(b);
             BigInteger tmp = BigInteger.valueOf(value).modPow(e, n);
-            sb.append(tmp.toString(ENCRYPT_RADIX)).append(",");
+            sb.append(tmp.toString(ENCRYPT_RADIX)).append(SPLIT);
         }
         return sb.toString().getBytes();
     }
@@ -62,7 +62,7 @@ public class CipherUtilsImpl implements CipherUtils {
     public byte[] decrypt(byte[] encryptedText, CipherKey key) {
         BigInteger n = key.getKey()[0];
         BigInteger d = key.getKey()[1];
-        String[] encryptedNums = new String(encryptedText).split(",");
+        String[] encryptedNums = new String(encryptedText).split(SPLIT);
         byte[] res = new byte[encryptedNums.length];
 
         for (int i = 0; i < encryptedNums.length; i++) {
@@ -75,12 +75,25 @@ public class CipherUtilsImpl implements CipherUtils {
 
     @Override
     public boolean compareBytes(byte[] bytes1, byte[] bytes2) {
-        return false;
+        if (bytes1.length != bytes2.length)
+            return false;
+        for (int i = 0; i < bytes1.length; i++) {
+            if (bytes1[i] != bytes2[i])
+                return false;
+        }
+        return true;
     }
+
+    private static final int MIN_LENGTH = 64;       // 随机字节数组最短长度（包含该长度）
+    private static final int MAX_LENGTH = 256;      // 随机字节数组最长长度（不包含该长度）
 
     @Override
     public byte[] genBytes() {
-        return new byte[0];
+        Random random = new Random();
+        int length = MIN_LENGTH + random.nextInt(MAX_LENGTH - MIN_LENGTH);
+        byte[] res = new byte[length];
+        random.nextBytes(res);
+        return res;
     }
 
 }
