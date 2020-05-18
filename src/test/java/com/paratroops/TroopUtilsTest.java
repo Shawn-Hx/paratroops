@@ -10,4 +10,8 @@ public class TroopUtilsTest extends TestCase {
 
     // TODO TroopUtils接口方法测试用例
 
+    public void test() {
+
+    }
+
 }
