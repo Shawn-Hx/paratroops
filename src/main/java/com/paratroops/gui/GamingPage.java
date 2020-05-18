@@ -1,7 +1,8 @@
 package com.paratroops.gui;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import javax.swing.JButton;
+import javax.swing.JPanel;
 
 import com.paratroops.dto.GameDTO;
 
@@ -14,8 +15,6 @@ public class GamingPage extends JPanel {
      * default serial version id
      */
     private static final long serialVersionUID = 1L;
-
-    private JLabel gameLabel;
 
     private GameDTO gameDto;
     
@@ -31,12 +30,15 @@ public class GamingPage extends JPanel {
         this.setBounds(0, 0, WindowPage.SIZE[0], WindowPage.SIZE[1]);
         this.setLayout(new BorderLayout());
         this.add(returnButton, BorderLayout.NORTH);
-
-        gameLabel = new JLabel("Game Picture\rnumRed: " + String.valueOf(gameDto.getNumRed()) + "\rnumBlue: " + String.valueOf(gameDto.getNumBlue()) + "\rthreshRed: " + String.valueOf(gameDto.getThreshRed()) + "\rthreshBlue: " + String.valueOf(gameDto.getThreshBlue()));
-        this.add(gameLabel, BorderLayout.CENTER);
+        
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(null);
+        Map map = new Map(gameDto);
+        buttonPanel.add(map);
+        this.add(buttonPanel);
     }
 
     public void newGame() {
-        gameLabel.setText("Game Picture\rnumRed: " + String.valueOf(gameDto.getNumRed()) + "\rnumBlue: " + String.valueOf(gameDto.getNumBlue()) + "\rthreshRed: " + String.valueOf(gameDto.getThreshRed()) + "\rthreshBlue: " + String.valueOf(gameDto.getThreshBlue()));
+        
     }
 }
