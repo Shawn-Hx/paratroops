@@ -9,7 +9,7 @@ public class Picture extends JPanel {
 
     Image image;
     
-	public Picture(URL url, int x, int y, int w, int h){
+	public Picture(URL url, int x, int y, int w, int h) {
 		super();
 		image = new ImageIcon(url).getImage();
 		this.setBounds(x, y, Math.min(image.getWidth(this), w), Math.min(image.getHeight(this), h));	

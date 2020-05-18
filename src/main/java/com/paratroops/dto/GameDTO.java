@@ -6,8 +6,10 @@ package com.paratroops.dto;
 public class GameDTO {
     /**
      * 地图尺寸
+     * SIZE[0]: 行数
+     * SIZE[1]: 列数
      */
-    private int[] SIZE = {10, 10};
+    private int[] SIZE = {6, 12};
 
     /**
      * 队伍人数上下限
