@@ -1,5 +1,7 @@
 package com.paratroops;
 
+import com.paratroops.gui.WindowPage;
+
 /**
  * Hello world!
  *
@@ -8,6 +10,6 @@ public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+        WindowPage window = new WindowPage();
     }
 }
