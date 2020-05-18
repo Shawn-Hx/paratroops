@@ -8,7 +8,7 @@ import junit.framework.TestCase;
 
 public class CipherUtilsTest extends TestCase {
 
-    public CipherUtils cipher = new CipherUtilsImpl();
+    public CipherUtils cipher = CipherUtilsImpl.getInstance();
 
     public void testGenKeyPair() {
         CipherKey[] key = cipher.genKeyPair();
