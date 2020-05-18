@@ -7,6 +7,21 @@ import java.math.BigInteger;
 import java.util.Random;
 
 public class CipherUtilsImpl implements CipherUtils {
+
+    /**
+     * 单例
+     */
+    private static CipherUtilsImpl instance;
+
+    public static CipherUtilsImpl getInstance() {
+        if (instance == null) {
+            instance = new CipherUtilsImpl();
+        }
+        return instance;
+    }
+
+    private CipherUtilsImpl() {}
+
     /**
      * 大素数bit位数
      */
@@ -24,7 +39,7 @@ public class CipherUtilsImpl implements CipherUtils {
 
     @Override
     public CipherKey[] genKeyPair() {
-        Random random = new Random(1234);
+        Random random = new Random();
 
         BigInteger e = BigInteger.valueOf(E);   // e is be fixed 65535 temporarily
         BigInteger p, q, n, phi;
