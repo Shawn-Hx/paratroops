@@ -32,7 +32,7 @@ public class Soldier {
      * boxKeyPair[0]: x
      * boxKeyPair[1]: y
      */
-    private CipherKey[] boxKeyPair;
+    private long[] boxKeyPair;
 
     /**
      * 队友们的公钥表：士兵对象 -> 公钥
@@ -55,8 +55,12 @@ public class Soldier {
         return this.keyPair[0];
     }
 
-    public CipherKey[] getBoxKeyPair() {
+    public long[] getBoxKeyPair() {
         return this.boxKeyPair;
+    }
+
+    public void setBoxKeyPair(long[] boxKeyPair) {
+        this.boxKeyPair = boxKeyPair;
     }
 
     /**
