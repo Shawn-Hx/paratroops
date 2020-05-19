@@ -2,9 +2,6 @@ package com.paratroops.dto;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-
-import javax.print.attribute.standard.NumberUpSupported;
 
 import com.paratroops.entity.Team;
 import com.paratroops.gui.JSoldier;
@@ -72,5 +69,17 @@ public class TeamDTO {
     
     public byte[] getBoxKey() {
         return boxKey;
+    }
+
+    public int getNumSoldiers() {
+        return numSoldiers;
+    }
+
+    public int getThreshold() {
+        return threshold;
+    }
+
+    public int getNumHighestRank() {
+        return numHighestRank;
     }
 }

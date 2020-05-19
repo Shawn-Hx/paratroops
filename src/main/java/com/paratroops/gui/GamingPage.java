@@ -2,7 +2,6 @@ package com.paratroops.gui;
 
 import java.awt.BorderLayout;
 import java.util.List;
-import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
