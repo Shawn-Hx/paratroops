@@ -9,7 +9,7 @@ public interface TroopUtils {
      * 跳伞前给同一队伍的所有士兵分发其所有队友的公钥
      * @param soldiers 同一队伍的士兵
      */
-    public void despatchPublicKeys(List<Soldier> soldiers);
+    public void despatchPublicKeys(List<? extends Soldier> soldiers);
 
     /**
      * 跳伞前给同一队伍的所有士兵分发用于开箱的密钥对
@@ -17,7 +17,7 @@ public interface TroopUtils {
      * @param threshold 开箱门限，至少{@code threshold}个士兵才能开箱
      * @param boxKey 待加密的箱子明文
      */
-    public void despathBoxKeyPairs(List<Soldier> soldiers, int threshold, byte[] boxKey);
+    public void despathBoxKeyPairs(List<? extends Soldier> soldiers, int threshold, byte[] boxKey);
 
     /**
      * 身份认证
@@ -38,12 +38,12 @@ public interface TroopUtils {
     /**
      * 将士兵按军衔从高到低排序
      */
-    public void sortByRank(List<Soldier> soldiers);
+    public void sortByRank(List<? extends Soldier> soldiers);
 
     /**
      * 从一队士兵中按照军衔选举指挥官
      */
-    public Soldier electLeader(List<Soldier> soldiers);
+    public Soldier electLeader(List<? extends Soldier> soldiers);
 
     /**
      * 判断给定的这些士兵能否开箱
@@ -51,5 +51,5 @@ public interface TroopUtils {
      * @param boxKey 箱子明文
      * @return 是否开箱成功
      */
-    public boolean openBox(List<Soldier> soldiers, byte[] boxKey);
+    public boolean openBox(List<? extends Soldier> soldiers, byte[] boxKey);
 }

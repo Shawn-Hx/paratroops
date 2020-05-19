@@ -33,25 +33,35 @@ public class OptionPage extends JPanel {
         JPanel  numRedPanel = new JPanel(new GridLayout(1, 2)),
                 numBluePanel = new JPanel(new GridLayout(1, 2)),
                 threshRedPanel = new JPanel(new GridLayout(1, 2)),
-                threshBluePanel = new JPanel(new GridLayout(1, 2));
+                threshBluePanel = new JPanel(new GridLayout(1, 2)),
+                numHighestRankRedPanel = new JPanel(new GridLayout(1, 2)),
+                numHighestRankBluePanel = new JPanel(new GridLayout(1, 2));
 
         JLabel  numRedLabel = new JLabel("  红方队员(nr, " + String.valueOf(GameDTO.MIN_NUM) + " <= nr <= " + String.valueOf(GameDTO.MAX_NUM) + "): "),
                 numBlueLabel = new JLabel("  蓝方队员(nb, " + String.valueOf(GameDTO.MIN_NUM) + " <= nb <= " + String.valueOf(GameDTO.MAX_NUM) + "): "),
                 threshRedLabel = new JLabel("  红方开箱阈值人数(tr, 1 <= tr <= nr): "),
-                threshBlueLabel = new JLabel("  蓝方开箱阈值人数(tb, 1 <= tb <= nb): ");
+                threshBlueLabel = new JLabel("  蓝方开箱阈值人数(tb, 1 <= tb <= nb): "),
+                numHighestRankRedLabel = new JLabel("  红方最高军衔人数(hr, 1 <= hr <= nr): "),
+                numHighestRankBlueLabel = new JLabel("  蓝方最高军衔人数(hb, 1 <= hb <= nb): ");
         numRedLabel.setFont(textFont);
         numBlueLabel.setFont(textFont);
         threshRedLabel.setFont(textFont);
         threshBlueLabel.setFont(textFont);
+        numHighestRankRedLabel.setFont(textFont);
+        numHighestRankBlueLabel.setFont(textFont);
 
         JTextField  numRedText = new JTextField(String.valueOf(GameDTO.DEF_NUM_RED)),
                     numBlueText = new JTextField(String.valueOf(GameDTO.DEF_NUM_BLUE)),
                     threshRedText = new JTextField(String.valueOf(GameDTO.DEF_THRESH_RED)),
-                    threshBlueText = new JTextField(String.valueOf(GameDTO.DEF_THRESH_BLUE));
+                    threshBlueText = new JTextField(String.valueOf(GameDTO.DEF_THRESH_BLUE)),
+                    numHighestRankRedText = new JTextField(String.valueOf(GameDTO.DEF_HIGHEST_RANK)),
+                    numHighestRankBlueText = new JTextField(String.valueOf(GameDTO.DEF_HIGHEST_RANK));
         numRedText.setFont(textFont);
         numBlueText.setFont(textFont);
         threshRedText.setFont(textFont);
         threshBlueText.setFont(textFont);
+        numHighestRankRedText.setFont(textFont);
+        numHighestRankBlueText.setFont(textFont);
         
         numRedPanel.add(numRedLabel);
         numRedPanel.add(numRedText);
@@ -61,6 +71,10 @@ public class OptionPage extends JPanel {
         threshRedPanel.add(threshRedText);
         threshBluePanel.add(threshBlueLabel);
         threshBluePanel.add(threshBlueText);
+        numHighestRankRedPanel.add(numHighestRankRedLabel);
+        numHighestRankRedPanel.add(numHighestRankRedText);
+        numHighestRankBluePanel.add(numHighestRankBlueLabel);
+        numHighestRankBluePanel.add(numHighestRankBlueText);
 
         JButton saveButton = new JButton("确认");
         saveButton.setFont(textFont);
@@ -71,6 +85,8 @@ public class OptionPage extends JPanel {
             gameDto.setNumBlue(Integer.parseInt(numBlueText.getText()));
             gameDto.setThreshRed(Integer.parseInt(threshRedText.getText()));
             gameDto.setThreshBlue(Integer.parseInt(threshBlueText.getText()));
+            gameDto.setNumHighestRankRed(Integer.parseInt(numHighestRankRedText.getText()));
+            gameDto.setNumHighestRankBlue(Integer.parseInt(numHighestRankBlueText.getText()));
 
             // 退出设置页
             window.toTitle();
@@ -78,12 +94,14 @@ public class OptionPage extends JPanel {
 
         this.setBorder(BorderFactory.createLoweredBevelBorder());
         this.setBounds(BOUNDS[0], BOUNDS[1], BOUNDS[2], BOUNDS[3]);
-        this.setLayout(new GridLayout(6, 1));
+        this.setLayout(new GridLayout(8, 1));
         this.add(titleLabel);
 		this.add(numRedPanel);
 		this.add(numBluePanel);
         this.add(threshRedPanel);
         this.add(threshBluePanel);
+        this.add(numHighestRankRedPanel);
+        this.add(numHighestRankBluePanel);
         this.add(saveButton);
     }
 }
