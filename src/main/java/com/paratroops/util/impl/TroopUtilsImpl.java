@@ -30,7 +30,7 @@ public class TroopUtilsImpl implements TroopUtils {
     private TroopUtilsImpl() {}
 
     @Override
-    public void despatchPublicKeys(List<Soldier> soldiers) {
+    public void despatchPublicKeys(List<? extends Soldier> soldiers) {
         for (Soldier soldier : soldiers) {
             for (Soldier teammate : soldiers) {
                 if (soldier == teammate) {
@@ -40,8 +40,9 @@ public class TroopUtilsImpl implements TroopUtils {
         }
     }
 
+    // TODO boxKey参数类型
     @Override
-    public void despathBoxKeyPairs(List<Soldier> soldiers, int threshold, int boxKey) {
+    public void despathBoxKeyPairs(List<? extends Soldier> soldiers, int threshold, byte[] boxKey) {
         int n = soldiers.size();
         assert threshold <= n;
 
@@ -49,20 +50,22 @@ public class TroopUtilsImpl implements TroopUtils {
         // coefficients 依次存放多项式x的0次项、1次项、...、t-1次项的系数
         int[] coefficients = new int[threshold];
         // 常数项固定为secret的值
-        coefficients[0] = boxKey;
+        coefficients[0] = boxKey[0];
         // 生成随机的多项式系数
         for (int i = 1; i < coefficients.length; i++) {
             coefficients[i] = 1 + random.nextInt(256);
         }
         // 分发
+        int num = 1;
         for (Soldier soldier : soldiers) {
-            long x = soldier.index; // x暂定为伞兵编号
+            long x = num;
             long y = coefficients[threshold - 1];
 
             for (int i = threshold - 2; i >= 0; i--) {
                 y = y * x + coefficients[i];
             }
             soldier.setBoxKeyPair(new long[]{x, y});
+            num++;
         }
     }
 
@@ -77,17 +80,18 @@ public class TroopUtilsImpl implements TroopUtils {
     }
 
     @Override
-    public void sortByRank(List<Soldier> soldiers) {
+    public void sortByRank(List<? extends Soldier> soldiers) {
 
     }
 
     @Override
-    public Soldier electLeader(List<Soldier> soldiers) {
+    public Soldier electLeader(List<? extends Soldier> soldiers) {
         return null;
     }
 
+    // TODO boxKey 参数类型
     @Override
-    public boolean openBox(List<Soldier> soldiers, int boxKey) {
+    public boolean openBox(List<? extends Soldier> soldiers, byte[] boxKey) {
         // TODO soldiers是所有伞兵还是仅有开箱子的伞兵？
         int n = soldiers.size();
         double[][] coefficient = new double[n][n];
@@ -111,7 +115,7 @@ public class TroopUtilsImpl implements TroopUtils {
         double f0 = x.getArray()[0][0];
 
         // 四舍五入取整后比较
-        return Math.round(f0) == boxKey;
+        return Math.round(f0) == boxKey[0];
     }
 
 }

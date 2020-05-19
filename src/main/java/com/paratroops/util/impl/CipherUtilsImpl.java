@@ -4,6 +4,9 @@ import com.paratroops.util.CipherKey;
 import com.paratroops.util.CipherUtils;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class CipherUtilsImpl implements CipherUtils {
@@ -20,7 +23,8 @@ public class CipherUtilsImpl implements CipherUtils {
         return instance;
     }
 
-    private CipherUtilsImpl() {}
+    private CipherUtilsImpl() {
+    }
 
     /**
      * 大素数bit位数
@@ -41,7 +45,7 @@ public class CipherUtilsImpl implements CipherUtils {
     public CipherKey[] genKeyPair() {
         Random random = new Random();
 
-        BigInteger e = BigInteger.valueOf(E);   // e is be fixed 65535 temporarily
+        BigInteger e = BigInteger.valueOf(E); // e is be fixed 65535 temporarily
         BigInteger p, q, n, phi;
         do {
             p = BigInteger.probablePrime(PRIME_BIT_LENGTH, random);
@@ -53,8 +57,8 @@ public class CipherUtilsImpl implements CipherUtils {
         BigInteger d = e.modInverse(phi);
 
         CipherKey[] key = new CipherKey[2];
-        key[0] = new CipherKey(n, e);   // Public key
-        key[1] = new CipherKey(n, d);   // Private key
+        key[0] = new CipherKey(n, e); // Public key
+        key[1] = new CipherKey(n, d); // Private key
 
         return key;
     }
@@ -83,7 +87,7 @@ public class CipherUtilsImpl implements CipherUtils {
         for (int i = 0; i < encryptedNums.length; i++) {
             BigInteger num = new BigInteger(encryptedNums[i], ENCRYPT_RADIX);
             int value = num.modPow(d, n).intValue();
-            res[i] = (byte)value;
+            res[i] = (byte) value;
         }
         return res;
     }
@@ -99,8 +103,8 @@ public class CipherUtilsImpl implements CipherUtils {
         return true;
     }
 
-    private static final int MIN_LENGTH = 64;       // 随机字节数组最短长度（包含该长度）
-    private static final int MAX_LENGTH = 256;      // 随机字节数组最长长度（不包含该长度）
+    private static final int MIN_LENGTH = 64; // 随机字节数组最短长度（包含该长度）
+    private static final int MAX_LENGTH = 256; // 随机字节数组最长长度（不包含该长度）
 
     @Override
     public byte[] genBytes() {
@@ -109,6 +113,33 @@ public class CipherUtilsImpl implements CipherUtils {
         byte[] res = new byte[length];
         random.nextBytes(res);
         return res;
+    }
+
+    @Override
+    public List<Integer> samplePositions(int[] SIZE, int numPos) {
+        List<Integer> allPositions = new ArrayList<Integer>(SIZE[0] * SIZE[1]);
+        for (int i=0; i<SIZE[0]; ++i) {
+            for (int j=0; j<SIZE[1]; ++j) {
+                allPositions.add(i * SIZE[1] + j);
+            }
+        }
+        Collections.shuffle(allPositions);
+        return allPositions.subList(0, numPos);
+    }
+
+    @Override
+    public List<Integer> genRandomRankList(int numRank, int highestRank, int numHighestRank) {
+        Random random = new Random();
+        List<Integer> ranks = new ArrayList<Integer>(numRank);
+        int i = 0, numFirst = numRank - numHighestRank;
+        for (i=0; i<numFirst; ++i) {
+            ranks.add(random.nextInt(highestRank));     // 首先生成不含最高军衔的序列
+        }
+        for (; i<numRank; ++i) {
+            ranks.add(highestRank);                     // 在原序列后添加重复的最高军衔
+        }
+        Collections.shuffle(ranks);                     // 打乱军衔序列，防止最高军衔扎堆在最后
+        return ranks;
     }
 
 }

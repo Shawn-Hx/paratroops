@@ -1,5 +1,9 @@
 package com.paratroops.dto;
 
+import com.paratroops.entity.Team;
+import com.paratroops.util.CipherUtils;
+import com.paratroops.util.impl.CipherUtilsImpl;
+
 /**
  * 游戏数据对象
  */
@@ -32,6 +36,11 @@ public class GameDTO {
     public static final int DEF_THRESH_RED = 6, DEF_THRESH_BLUE = 6;
 
     /**
+     * 默认初始化每个队伍最高军衔人数
+     */
+    public static final int DEF_HIGHEST_RANK = 1;
+
+    /**
      * 红/蓝方队伍人数, MIN_NUM <= num <= MAX_NUM
      */
     private int numRed, numBlue;
@@ -42,6 +51,16 @@ public class GameDTO {
     private int threshRed, threshBlue;
 
     /**
+     * 红/蓝方最高军衔人数
+     */
+    private int numHighestRankRed, numHighestRankBlue;
+    
+    /**
+     * 红/蓝方队伍数据
+     */
+    private TeamDTO redTeamDto, blueTeamDto;
+
+    /**
      * 设置默认数据
      */
     public GameDTO() {
@@ -49,6 +68,8 @@ public class GameDTO {
         numBlue = DEF_NUM_BLUE;
         threshRed = DEF_THRESH_RED;
         threshBlue = DEF_THRESH_BLUE;
+        numHighestRankRed = DEF_HIGHEST_RANK;
+        numHighestRankBlue = DEF_HIGHEST_RANK;
     }
 
     public int[] getSIZE() {
@@ -87,5 +108,38 @@ public class GameDTO {
 
     public void setThreshBlue(int threshBlue) {
         this.threshBlue = Math.max(Math.min(threshBlue, MAX_THRESH_BLUE), MIN_THRESH);
+    }
+
+    public TeamDTO getRedTeamDTO() {
+        return redTeamDto;
+    }
+
+    public TeamDTO getBlueTeamDTO() {
+        return blueTeamDto;
+    }
+
+    public int getNumHighestRankRed() {
+        return numHighestRankRed;
+    }
+
+    public void setNumHighestRankRed(int numHighestRankRed) {
+        this.numHighestRankRed = numHighestRankRed;
+    }
+
+    public int getNumHighestRankBlue() {
+        return numHighestRankBlue;
+    }
+
+    public void setNumHighestRankBlue(int numHighestRankBlue) {
+        this.numHighestRankBlue = numHighestRankBlue;
+    }
+
+    /**
+     * 初始化红/蓝方队伍数据
+     */
+    public void init() {
+        CipherUtils cipherUtils = CipherUtilsImpl.getInstance();
+        redTeamDto = new TeamDTO(Team.RED, numRed, threshRed, numHighestRankRed, cipherUtils);
+        blueTeamDto = new TeamDTO(Team.BLUE, numBlue, threshBlue, numHighestRankBlue, cipherUtils);
     }
 }

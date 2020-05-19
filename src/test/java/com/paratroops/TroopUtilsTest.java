@@ -17,13 +17,13 @@ public class TroopUtilsTest extends TestCase {
 
     public void testOpenBox() {
         List<Soldier> soldiers = new ArrayList<>();
-        soldiers.add(new Soldier(1, 1, cipherUtils));
-        soldiers.add(new Soldier(2, 2, cipherUtils));
-        soldiers.add(new Soldier(3, 3, cipherUtils));
-        soldiers.add(new Soldier(4, 4, cipherUtils));
-        soldiers.add(new Soldier(5, 5, cipherUtils));
+        soldiers.add(new Soldier(1, cipherUtils));
+        soldiers.add(new Soldier(2, cipherUtils));
+        soldiers.add(new Soldier(3, cipherUtils));
+        soldiers.add(new Soldier(4, cipherUtils));
+        soldiers.add(new Soldier(5, cipherUtils));
 
-        int secretBoxKey = 1234;
+        byte[] secretBoxKey = new byte[]{23};
         int threshold = 3;
         troopUtils.despathBoxKeyPairs(soldiers, threshold, secretBoxKey);
 

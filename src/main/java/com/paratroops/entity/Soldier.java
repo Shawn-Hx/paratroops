@@ -6,21 +6,19 @@ import com.paratroops.message.AuthMessage;
 import com.paratroops.util.CipherKey;
 import com.paratroops.util.CipherUtils;
 
+/**
+ * 多方安全计算的主体：士兵对象
+ */
 public class Soldier {
     /**
-     * 编号
+     * 最高军衔
      */
-    public int index;
-
-    /**
-     * 是否参与开箱任务
-     */
-    public boolean inTask = false;
+    public static final int HIGHEST_RANK = 9;
 
     /**
      * 军衔
      */
-    private int rank;
+    protected int rank;
 
     /**
      * 本人的公钥私钥对
@@ -37,17 +35,16 @@ public class Soldier {
     private long[] boxKeyPair;
 
     /**
-     * 队友们的公钥表：编号 -> 公钥
+     * 队友们的公钥表：士兵对象 -> 公钥
      */
-    private HashMap<Integer, CipherKey> teamKeys;
+    private HashMap<Soldier, CipherKey> teamKeys;
 
     /**
      * 密码学算法封装
      */
     private CipherUtils cipherUtils;
 
-    public Soldier(int index, int rank, CipherUtils cipherUtils) {
-        this.index = index;
+    public Soldier(int rank, CipherUtils cipherUtils) {
         this.rank = rank;
         this.cipherUtils = cipherUtils;
         this.keyPair = cipherUtils.genKeyPair();
@@ -71,7 +68,7 @@ public class Soldier {
      * @param other
      */
     public void addTeamMate(Soldier other) {
-        this.teamKeys.put(other.index, other.getPublicKey());
+        this.teamKeys.put(other, other.getPublicKey());
     }
 
     /**
@@ -80,10 +77,10 @@ public class Soldier {
      */
     public boolean checkAuthRequest(Soldier other) {
         AuthMessage message = other.sendAuthRequest();
-        if (!teamKeys.containsKey(other.index)) {
+        if (!teamKeys.containsKey(other)) {
             return false;
         }
-        CipherKey publicKey = teamKeys.get(other.index);
+        CipherKey publicKey = teamKeys.get(other);
         byte[] decrypted = cipherUtils.decrypt(message.getEncryptedText(), publicKey); 
         return cipherUtils.compareBytes(decrypted, message.getPlainText());
     }
