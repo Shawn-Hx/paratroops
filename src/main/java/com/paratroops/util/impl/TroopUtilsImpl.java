@@ -25,6 +25,8 @@ public class TroopUtilsImpl implements TroopUtils {
         return instance;
     }
 
+    private TroopUtilsImpl() {}
+
     @Override
     public void despatchPublicKeys(List<Soldier> soldiers) {
         for (Soldier soldier : soldiers) {
