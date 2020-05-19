@@ -29,14 +29,15 @@ public class WindowPage extends JFrame {
     private Picture background;     // 背景图片
 
     public WindowPage() {
+        // 背景图片
+        URL bgUrl = App.class.getClassLoader().getResource("background.jpeg");
+        background = new Picture(bgUrl, 0, 0, SIZE[0], SIZE[1]);
+
         // 各页面初始化
         GameDTO gameDto = new GameDTO();
         titlePage = new TitlePage(this, gameDto);
         gamingPage = new GamingPage(this, gameDto);
         optionPage = new OptionPage(this, gameDto);
-        // 背景图片
-        URL bgUrl = App.class.getClassLoader().getResource("background.jpeg");
-        background = new Picture(bgUrl, 0, 0, SIZE[0], SIZE[1]);
 
         this.add(titlePage);
         this.add(gamingPage);

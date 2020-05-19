@@ -26,7 +26,7 @@ public class TroopUtilsImpl implements TroopUtils {
     }
 
     @Override
-    public void despatchPublicKeys(List<Soldier> soldiers) {
+    public void despatchPublicKeys(List<? extends Soldier> soldiers) {
         for (Soldier soldier : soldiers) {
             for (Soldier teammate : soldiers) {
                 if (soldier == teammate) {
@@ -37,7 +37,7 @@ public class TroopUtilsImpl implements TroopUtils {
     }
 
     @Override
-    public void despathBoxKeyPairs(List<Soldier> soldiers, int threshold, byte[] boxKey) {
+    public void despathBoxKeyPairs(List<? extends Soldier> soldiers, int threshold, byte[] boxKey) {
 
     }
 
@@ -52,17 +52,17 @@ public class TroopUtilsImpl implements TroopUtils {
     }
 
     @Override
-    public void sortByRank(List<Soldier> soldiers) {
+    public void sortByRank(List<? extends Soldier> soldiers) {
 
     }
 
     @Override
-    public Soldier electLeader(List<Soldier> soldiers) {
+    public Soldier electLeader(List<? extends Soldier> soldiers) {
         return null;
     }
 
     @Override
-    public boolean openBox(List<Soldier> soldiers, byte[] boxKey) {
+    public boolean openBox(List<? extends Soldier> soldiers, byte[] boxKey) {
         return false;
     }
 }
