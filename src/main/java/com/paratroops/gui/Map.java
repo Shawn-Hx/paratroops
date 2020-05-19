@@ -3,9 +3,7 @@ package com.paratroops.gui;
 import javax.swing.*;
 
 import com.paratroops.dto.GameDTO;
-import com.paratroops.entity.Team;
 import com.paratroops.gui.util.Block;
-import com.paratroops.util.impl.CipherUtilsImpl;
 
 /**
  * 游戏地图
@@ -34,17 +32,6 @@ public class Map extends JPanel {
                 this.add(blocks[i][j]);
             }
         } 
-
-        // soldiers
-        // for (int i=0; i<mapSize[0]; ++i) {
-        //     for (int j=0; j<mapSize[1]; ++j) {
-        //         if ((i + j) % 2 == 0) {
-        //             blocks[i][j].add((new JSoldier(0, CipherUtilsImpl.getInstance(), i, j, Team.RED)).getPicture(), Integer.valueOf(1));
-        //         } else {
-        //             blocks[i][j].add((new JSoldier(0, CipherUtilsImpl.getInstance(), i, j, Team.BLUE)).getPicture(), Integer.valueOf(1));
-        //         }
-        //     }
-        // } 
     }
 
     /**
