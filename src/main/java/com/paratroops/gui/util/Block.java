@@ -1,5 +1,8 @@
 package com.paratroops.gui.util;
 
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.net.URL;
 import javax.swing.JLayeredPane;
 
@@ -22,11 +25,18 @@ public class Block extends JLayeredPane {
 
     private JSoldier soldier = null;
 
+    private static final URL BLOCK_SELECTED = App.class.getClassLoader().getResource("block_selected.jpg");
+
+    private int x;
+
+    private int y;
     /**
      * @param x distance left to the left bounder of the whole map
      * @param y distance up to the upper bounder of the whole map
      */
     public Block(int x, int y) {
+        this.x = x;
+        this.y = y;
         this.setBounds(x, y, BLOCK_WIDTH, BLOCK_HEIGHT);
         Picture pic = new Picture(BLOCK_URL, 0, 0, BLOCK_WIDTH, BLOCK_HEIGHT);
         this.add(pic, Integer.valueOf(0));           // 把草地图片放在最底层
@@ -49,4 +59,13 @@ public class Block extends JLayeredPane {
     public void setSoldier(JSoldier soldier) {
         this.soldier = soldier;
     }
+
+    /**
+     * 将单元格设置为被选中的样子(红色背景)
+     */
+    public void setSelected(){
+        Picture selected_background = new Picture(BLOCK_SELECTED, 0, 0, BLOCK_WIDTH, BLOCK_HEIGHT);
+        this.add(selected_background,Integer.valueOf(1));
+    }
+
 }

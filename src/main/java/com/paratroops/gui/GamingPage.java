@@ -1,6 +1,6 @@
 package com.paratroops.gui;
 
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -35,6 +35,20 @@ public class GamingPage extends JPanel {
         this.gameDto = gameDto;
 
         JButton returnButton = new JButton("退出");
+        JPanel procedurePanel = new JPanel();
+        //初始化关键过程的各个button
+        JButton identificationEach = new JButton("两两认证");
+        JButton identificationFinal = new JButton("认证结果");
+        JButton rankCompareEach = new JButton("军衔比较");
+        JButton rankCompareFinal = new JButton("选举结果");
+        JButton openBox = new JButton("打开补给");
+
+        procedurePanel.setLayout(new GridLayout(5,1));
+        procedurePanel.add(identificationEach);
+        procedurePanel.add(identificationFinal);
+        procedurePanel.add(rankCompareEach);
+        procedurePanel.add(rankCompareFinal);
+        procedurePanel.add(openBox);
 
         returnButton.addActionListener(e -> {
             window.toTitle();
@@ -43,6 +57,7 @@ public class GamingPage extends JPanel {
         this.setBounds(0, 0, WindowPage.SIZE[0], WindowPage.SIZE[1]);
         this.setLayout(new BorderLayout());
         this.add(returnButton, BorderLayout.NORTH);
+        this.add(procedurePanel,BorderLayout.EAST);
         
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(null);

@@ -5,6 +5,9 @@ import javax.swing.*;
 import com.paratroops.dto.GameDTO;
 import com.paratroops.gui.util.Block;
 
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 /**
  * 游戏地图
  */
@@ -13,6 +16,10 @@ public class Map extends JPanel {
      * default serial version id
      */
     private static final long serialVersionUID = 1L;
+
+    private static boolean one_block_selected = false;
+
+    private static boolean two_block_selected = false;
 
     /**
      * 地图单元格阵列
@@ -27,11 +34,12 @@ public class Map extends JPanel {
         blocks = new Block[mapSize[0]][mapSize[1]];
         for (int i=0; i<mapSize[0]; ++i) {
             for (int j=0; j<mapSize[1]; ++j) {
-                blocks[i][j] = new Block(10 + j * 100, 10 + i * 100);
-                
+                Block temp = new Block(10 + j * 100, 10 + i * 100);
+                temp.addMouseListener(new BlockMouseListener());
+                blocks[i][j] = temp;
                 this.add(blocks[i][j]);
             }
-        } 
+        }
     }
 
     /**
@@ -52,5 +60,64 @@ public class Map extends JPanel {
                 }
             }
         }
+    }
+
+    /**
+     * Block Listener，用于选中两个士兵(背景变红)
+     */
+    private class BlockMouseListener implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            Block blockClicked = (Block) e.getSource();
+            //判断这个格子上是不是有soldier
+            //没有就什么都不做
+            if(!blockClicked.containsSoldier()){
+                return;
+            }else{
+                //check 是不是已经有格子被选中了
+                if (one_block_selected){
+                    //那么这个格子也被选中
+                    if(two_block_selected){
+                        //什么都不做，直到有什么过程结束
+                    }else{
+                        two_block_selected = true;
+                        //格子变色
+                        blockClicked.setSelected();
+                    }
+                }else{
+                    //如果这是第一个
+                    one_block_selected = true;
+                    //格子变色
+                    blockClicked.setSelected();
+                }
+
+            }
+
+
+
+
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
+
     }
 }
