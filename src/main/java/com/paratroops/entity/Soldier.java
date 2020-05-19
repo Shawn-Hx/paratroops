@@ -13,20 +13,9 @@ public class Soldier {
     public int index;
 
     /**
-     * 在地图上的坐标
-     */
-    public int posX;
-    public int posY;
-
-    /**
      * 是否参与开箱任务
      */
     public boolean inTask = false;
-
-    /**
-     * 所属队伍：红方、蓝方
-     */
-    private int team;
 
     /**
      * 军衔
@@ -57,11 +46,8 @@ public class Soldier {
      */
     private CipherUtils cipherUtils;
 
-    public Soldier(int index, int posX, int posY, int team, int rank, CipherUtils cipherUtils) {
+    public Soldier(int index, int rank, CipherUtils cipherUtils) {
         this.index = index;
-        this.posX = posX;
-        this.posY = posY;
-        this.team = team;
         this.rank = rank;
         this.cipherUtils = cipherUtils;
         this.keyPair = cipherUtils.genKeyPair();
@@ -90,6 +76,9 @@ public class Soldier {
      */
     public boolean checkAuthRequest(Soldier other) {
         AuthMessage message = other.sendAuthRequest();
+        if (!teamKeys.containsKey(other.index)) {
+            return false;
+        }
         CipherKey publicKey = teamKeys.get(other.index);
         byte[] decrypted = cipherUtils.decrypt(message.getEncryptedText(), publicKey); 
         return cipherUtils.compareBytes(decrypted, message.getPlainText());

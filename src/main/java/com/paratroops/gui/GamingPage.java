@@ -38,6 +38,9 @@ public class GamingPage extends JPanel {
         this.add(buttonPanel);
     }
 
+    /**
+     * 根据{@code gameDto}重新初始化地图
+     */
     public void newGame() {
         
     }

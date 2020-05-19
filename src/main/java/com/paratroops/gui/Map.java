@@ -1,6 +1,6 @@
 package com.paratroops.gui;
 
-import java.awt.*;
+import java.awt.Color;
 import javax.swing.*;
 
 import com.paratroops.dto.GameDTO;
@@ -22,9 +22,6 @@ public class Map extends JPanel {
 
     public Map(GameDTO gameDto) {
         int[] mapSize = gameDto.getSIZE();
-        // GridLayout grid = new GridLayout(mapSize[0], mapSize[1]);
-        // grid.setHgap(0);
-        // grid.setVgap(0);
         this.setLayout(null);
         this.setBounds(10, 10, mapSize[1] * Block.BLOCK_WIDTH, mapSize[0] * Block.BLOCK_HEIGHT);
 
