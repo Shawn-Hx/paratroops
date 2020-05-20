@@ -140,6 +140,16 @@ public class Map extends JPanel {
     }
 
     /**
+     * 认证成功则显示这两个BLock应该对应的颜色
+     */
+    public void authenticationSuccess() {
+        Block firstSelected = selectedBlocks.get(0);
+        Block secondSelected = selectedBlocks.get(1);
+        firstSelected.authenticationSuccess();
+        secondSelected.authenticationSuccess();
+    }
+
+    /**
      * Block Listener，用于选中两个士兵(背景变红)
      */
     private class BlockMouseListener implements MouseListener {
