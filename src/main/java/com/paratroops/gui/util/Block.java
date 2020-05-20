@@ -7,6 +7,7 @@ import java.net.URL;
 import javax.swing.JLayeredPane;
 
 import com.paratroops.App;
+import com.paratroops.entity.Team;
 import com.paratroops.gui.JSoldier;
 
 /**
@@ -27,9 +28,13 @@ public class Block extends JLayeredPane {
 
     private static final URL BLOCK_SELECTED = App.class.getClassLoader().getResource("block_selected.jpg");
 
-    private static final URL SHOW_HIGHER_RANK_RESULT = App.class.getClassLoader().getResource("Higher_rank.png");
+    private static final URL SHOW_HIGHER_RANK_RESULT_BLUE = App.class.getClassLoader().getResource("BlueSoldier_higher.jpg");
 
-    private static final URL SHOW_LOWER_RANK_RESULT = App.class.getClassLoader().getResource("Lower_rank.png");
+    private static final URL SHOW_LOWER_RANK_RESULT_BLUE = App.class.getClassLoader().getResource("BlueSoldier_lower.jpg");
+
+    private static final URL SHOW_HIGHER_RANK_RESULT_RED = App.class.getClassLoader().getResource("RedSoldier_higher.jpg");
+
+    private static final URL SHOW_LOWER_RANK_RESULT_RED = App.class.getClassLoader().getResource("RedSoldier_lower.jpg");
 
 
     private int x;
@@ -87,7 +92,12 @@ public class Block extends JLayeredPane {
      * 如果该格的士兵军衔更高，则在士兵的大头上显示大
      */
     public void showHigherRankResult(){
-        Picture higher_rank_background = new Picture(SHOW_HIGHER_RANK_RESULT,0,0,BLOCK_WIDTH, BLOCK_HEIGHT);
+        Picture higher_rank_background;
+        if(this.getSoldier().team == Team.RED){
+            higher_rank_background = new Picture(SHOW_HIGHER_RANK_RESULT_RED,0,0,BLOCK_WIDTH, BLOCK_HEIGHT);
+        }else{
+            higher_rank_background = new Picture(SHOW_HIGHER_RANK_RESULT_BLUE,0,0,BLOCK_WIDTH, BLOCK_HEIGHT);
+        }
         this.add(higher_rank_background,Integer.valueOf(3));
         this.repaint();
     }
@@ -96,10 +106,22 @@ public class Block extends JLayeredPane {
      * 如果该格的士兵军衔更低，则在士兵的大头上显示小
      */
     public void showLowerRankResult(){
-        Picture lower_rank_background = new Picture(SHOW_LOWER_RANK_RESULT,0,0,BLOCK_WIDTH, BLOCK_HEIGHT);
+        Picture lower_rank_background;
+        if(this.getSoldier().team == Team.RED){
+            lower_rank_background = new Picture(SHOW_LOWER_RANK_RESULT_RED,0,0,BLOCK_WIDTH, BLOCK_HEIGHT);
+        }else{
+            lower_rank_background = new Picture(SHOW_LOWER_RANK_RESULT_BLUE,0,0,BLOCK_WIDTH, BLOCK_HEIGHT);
+        }
         this.add(lower_rank_background,Integer.valueOf(3));
         this.repaint();
     }
 
 
+    /**
+     * 被比较军衔的两个block恢复原状
+     */
+    public void resetRankCompareBlock() {
+        this.remove(Integer.valueOf(0));
+        this.repaint();
+    }
 }

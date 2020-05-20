@@ -53,8 +53,20 @@ public class GamingPage extends JPanel {
                     //如果是第二个选中的士兵军衔高
                     map.secondSolderHasHigherRand();
                 }
-                //将map重置为没有士兵被选中的样子
-//                map.resetBlockSelection();
+                //1000 ms 后恢复原状
+                Timer timer = new Timer(1000, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent arg0) {
+                        map.resetRankCompare();
+                        //将map重置为没有士兵被选中的样子
+                        map.resetBlockSelection();
+                        System.out.println("!!");
+                    }
+                });
+
+                timer.start();
+                timer.setRepeats(false);
+//                timer.stop();
 
             }else{
                 // do nothing
