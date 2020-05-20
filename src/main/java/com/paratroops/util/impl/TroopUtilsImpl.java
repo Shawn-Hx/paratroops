@@ -38,17 +38,16 @@ public class TroopUtilsImpl implements TroopUtils {
         }
     }
 
-    // TODO boxKey参数类型
     @Override
-    public void despathBoxKeyPairs(List<? extends Soldier> soldiers, int threshold, byte[] boxKey) {
+    public void despathBoxKeyPairs(List<? extends Soldier> soldiers, int threshold, int boxKey) {
         int n = soldiers.size();
         assert threshold <= n;
 
         Random random = new Random();
         // coefficients 依次存放多项式x的0次项、1次项、...、t-1次项的系数
         int[] coefficients = new int[threshold];
-        // 常数项固定为secret的值
-        coefficients[0] = boxKey[0];
+        // 常数项为箱子secret的值
+        coefficients[0] = boxKey;
         // 生成随机的多项式系数
         for (int i = 1; i < coefficients.length; i++) {
             coefficients[i] = 1 + random.nextInt(256);
@@ -87,10 +86,8 @@ public class TroopUtilsImpl implements TroopUtils {
         return null;
     }
 
-    // TODO boxKey 参数类型
     @Override
-    public boolean openBox(List<? extends Soldier> soldiers, byte[] boxKey) {
-        // TODO soldiers是所有伞兵还是仅有开箱子的伞兵？
+    public boolean openBox(List<? extends Soldier> soldiers, int boxKey) {
         int n = soldiers.size();
         double[][] coefficient = new double[n][n];
         double[][] bb = new double[n][1];
@@ -113,7 +110,7 @@ public class TroopUtilsImpl implements TroopUtils {
         double f0 = x.getArray()[0][0];
 
         // 四舍五入取整后比较
-        return Math.round(f0) == boxKey[0];
+        return Math.round(f0) == boxKey;
     }
 
 }
