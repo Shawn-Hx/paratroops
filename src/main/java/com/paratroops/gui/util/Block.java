@@ -89,6 +89,17 @@ public class Block extends JLayeredPane {
     }
 
     /**
+     * 认证成功就显示对应的颜色
+     */
+    public void authenticationSuccess(){
+        this.remove(Integer.valueOf(0));
+        Picture realSoldier = this.soldier.getPicture();
+        this.add(realSoldier,Integer.valueOf(2));
+        this.repaint();
+    }
+
+
+    /**
      * 如果该格的士兵军衔更高，则在士兵的大头上显示大
      */
     public void showHigherRankResult(){

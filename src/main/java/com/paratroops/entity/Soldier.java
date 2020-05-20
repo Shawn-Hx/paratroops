@@ -15,6 +15,7 @@ public class Soldier {
      */
     public static final int HIGHEST_RANK = 9;
 
+
     /**
      * 军衔
      */

@@ -89,6 +89,8 @@ public class GamingPage extends JPanel {
                     //如果是同一阵营，则显示为同一阵营
                     String sameTeamMessage = "同阵营";
                     JOptionPane.showMessageDialog(null, sameTeamMessage);
+                    //显示这两个Block的颜色
+                    map.authenticationSuccess();
                 }else{
                     //如果不是，就提示不是同一阵营
                     String differentTeamMessage = "不同阵营";
@@ -104,6 +106,16 @@ public class GamingPage extends JPanel {
         }
     }
 
+//    private class RankCompareFinalListener implements ActionListener{
+//
+//        @Override
+//        public void actionPerformed(ActionEvent e) {
+//            Soldier commander1 = null;
+//            Soldier commander2 = null;
+//            // 首先把指挥官的照片变成对应的加了红旗的
+//
+//        }
+//    }
 
     public GamingPage(WindowPage window, GameDTO gameDto) {
         this.gameDto = gameDto;
@@ -116,6 +128,7 @@ public class GamingPage extends JPanel {
         JButton identificationFinal = new JButton("认证结果");
         JButton rankCompareEach = new JButton("军衔比较");
         rankCompareEach.addActionListener(new RankCompareEachListener());
+//        JButton rankCompareFromGroups = new JButton("选举军官");
         JButton rankCompareFinal = new JButton("选举结果");
         JButton openBox = new JButton("打开补给");
 
@@ -168,7 +181,8 @@ public class GamingPage extends JPanel {
             soldier.setPosX(x);
             soldier.setPosY(y);
             Block block = map.getPosition(x, y);
-            block.add(soldier.getPicture(),Integer.valueOf(2));
+            block.add(soldier.getDefaultPic(),Integer.valueOf(2));
+//            block.add(soldier.getPicture(),Integer.valueOf(2));
             block.repaint();
             block.setSoldier(soldier);
         }
