@@ -68,4 +68,13 @@ public class Block extends JLayeredPane {
         this.add(selected_background,Integer.valueOf(1));
     }
 
+    /**
+     * 使被选中的格子恢复原来的背景
+     */
+    public void resetSelected(){
+        this.remove(Integer.valueOf(1));
+        this.repaint();
+    }
+
+
 }

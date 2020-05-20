@@ -3,10 +3,13 @@ package com.paratroops.gui;
 import javax.swing.*;
 
 import com.paratroops.dto.GameDTO;
+import com.paratroops.entity.Soldier;
 import com.paratroops.gui.util.Block;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 游戏地图
@@ -20,6 +23,13 @@ public class Map extends JPanel {
     private static boolean one_block_selected = false;
 
     private static boolean two_block_selected = false;
+
+    private Soldier first_solder_selected = null;
+
+    private Soldier second_solder_selected = null;
+
+    private List<Block> selectedBlocks = new ArrayList<Block>();
+
 
     /**
      * 地图单元格阵列
@@ -43,6 +53,20 @@ public class Map extends JPanel {
     }
 
     /**
+     * 将map重置为没有士兵被选中的样子
+     */
+    public void resetBlockSelection(){
+        one_block_selected = false;
+        two_block_selected = false;
+        first_solder_selected = null;
+        second_solder_selected = null;
+        for (Block block: selectedBlocks) {
+            block.resetSelected();
+        }
+        selectedBlocks.clear();
+    }
+
+    /**
      * 获取某位置的单元格
      * @param x 行坐标
      * @param y 列坐标
@@ -60,6 +84,29 @@ public class Map extends JPanel {
                 }
             }
         }
+    }
+
+    /**
+     * 检验是否有两个士兵被选中
+     * @return
+     */
+    public boolean ifTwoSoldiersSelected(){
+        if (one_block_selected && two_block_selected){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * 返回被选中的两个士兵
+     * @return
+     */
+    public List<Soldier> getSelectedTwoSoilders(){
+        List<Soldier> soldiers = new ArrayList<Soldier>();
+        soldiers.add(first_solder_selected);
+        soldiers.add(second_solder_selected);
+        return soldiers;
     }
 
     /**
@@ -82,20 +129,20 @@ public class Map extends JPanel {
                         //什么都不做，直到有什么过程结束
                     }else{
                         two_block_selected = true;
+                        selectedBlocks.add(blockClicked);
                         //格子变色
                         blockClicked.setSelected();
+                        second_solder_selected = blockClicked.getSoldier();
                     }
                 }else{
                     //如果这是第一个
                     one_block_selected = true;
+                    selectedBlocks.add(blockClicked);
                     //格子变色
                     blockClicked.setSelected();
+                    first_solder_selected = blockClicked.getSoldier();
                 }
-
             }
-
-
-
 
         }
 
