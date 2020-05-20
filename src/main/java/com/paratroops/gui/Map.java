@@ -130,6 +130,16 @@ public class Map extends JPanel {
     }
 
     /**
+     * 恢复被比较的两个Block的样子
+     */
+    public void resetRankCompare() {
+        Block firstSelected = selectedBlocks.get(0);
+        Block secondSelected = selectedBlocks.get(1);
+        firstSelected.resetRankCompareBlock();
+        secondSelected.resetRankCompareBlock();
+    }
+
+    /**
      * Block Listener，用于选中两个士兵(背景变红)
      */
     private class BlockMouseListener implements MouseListener {
