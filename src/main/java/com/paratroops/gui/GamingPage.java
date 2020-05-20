@@ -37,6 +37,33 @@ public class GamingPage extends JPanel {
 
     private TroopUtils troopUtils = TroopUtilsImpl.getInstance();
 
+    private class RankCompareEachListener implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            //check是不是有两个士兵被选中
+            if(map.ifTwoSoldiersSelected()){
+                //若是，则进行两两军衔比较
+                List<Soldier> soldiers = map.getSelectedTwoSoilders();
+                boolean result = false;
+                result = troopUtils.compareRank(soldiers.get(0),soldiers.get(1));
+                if (result){
+                    //如果是第一个选中的士兵军衔高
+                    map.firstSolderHasHigherRank();
+                }else{
+                    //如果是第二个选中的士兵军衔高
+                    map.secondSolderHasHigherRand();
+                }
+                //将map重置为没有士兵被选中的样子
+//                map.resetBlockSelection();
+
+            }else{
+                // do nothing
+                JOptionPane.showMessageDialog(null, "请选中任意两个士兵", "标题",JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+
     private class IdentificationEachListener implements ActionListener {
 
         @Override
@@ -77,6 +104,7 @@ public class GamingPage extends JPanel {
         identificationEach.addActionListener(new IdentificationEachListener());
         JButton identificationFinal = new JButton("认证结果");
         JButton rankCompareEach = new JButton("军衔比较");
+        rankCompareEach.addActionListener(new RankCompareEachListener());
         JButton rankCompareFinal = new JButton("选举结果");
         JButton openBox = new JButton("打开补给");
 
@@ -88,6 +116,7 @@ public class GamingPage extends JPanel {
         procedurePanel.add(openBox);
 
         returnButton.addActionListener(e -> {
+            map.resetBlockSelection();
             window.toTitle();
         });
 
@@ -128,7 +157,8 @@ public class GamingPage extends JPanel {
             soldier.setPosX(x);
             soldier.setPosY(y);
             Block block = map.getPosition(x, y);
-            block.add(soldier.getPicture(), Integer.valueOf(1));
+            block.add(soldier.getPicture(),Integer.valueOf(2));
+            block.repaint();
             block.setSoldier(soldier);
         }
     }
