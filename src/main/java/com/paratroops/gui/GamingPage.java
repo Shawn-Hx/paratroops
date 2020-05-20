@@ -117,6 +117,14 @@ public class GamingPage extends JPanel {
 //        }
 //    }
 
+    private class IdentificationFinalListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            map.showAuthenticationResult();
+        }
+    }
+
     public GamingPage(WindowPage window, GameDTO gameDto) {
         this.gameDto = gameDto;
 
@@ -126,6 +134,7 @@ public class GamingPage extends JPanel {
         JButton identificationEach = new JButton("两两认证");
         identificationEach.addActionListener(new IdentificationEachListener());
         JButton identificationFinal = new JButton("认证结果");
+        identificationFinal.addActionListener(new IdentificationFinalListener());
         JButton rankCompareEach = new JButton("军衔比较");
         rankCompareEach.addActionListener(new RankCompareEachListener());
 //        JButton rankCompareFromGroups = new JButton("选举军官");

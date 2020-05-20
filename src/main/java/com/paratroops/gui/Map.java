@@ -30,6 +30,8 @@ public class Map extends JPanel {
 
     private List<Block> selectedBlocks = new ArrayList<Block>();
 
+    private GameDTO gameDto;
+
 
     /**
      * 地图单元格阵列
@@ -37,6 +39,7 @@ public class Map extends JPanel {
     private Block[][] blocks;
 
     public Map(GameDTO gameDto) {
+        this.gameDto = gameDto;
         int[] mapSize = gameDto.getSIZE();
         this.setLayout(null);
         this.setBounds(10, 10, mapSize[1] * Block.BLOCK_WIDTH + 20, mapSize[0] * Block.BLOCK_HEIGHT + 20);
@@ -81,6 +84,7 @@ public class Map extends JPanel {
             for (Block block: row) {
                 if (block.containsSoldier()) {
                     block.remove(block.getSoldier().getPicture());
+                    block.resetBlock();
                 }
             }
         }
@@ -147,6 +151,21 @@ public class Map extends JPanel {
         Block secondSelected = selectedBlocks.get(1);
         firstSelected.authenticationSuccess();
         secondSelected.authenticationSuccess();
+    }
+
+    /**
+     * 一键认证按钮被按下之后，所有有士兵的Block显示它该有的颜色
+     */
+    public void showAuthenticationResult() {
+        int[] mapSize = this.gameDto.getSIZE();
+
+        for (int i=0; i<mapSize[0]; ++i) {
+            for (int j=0; j<mapSize[1]; ++j) {
+                if(blocks[i][j].containsSoldier()){
+                    blocks[i][j].authenticationSuccess();
+                }
+            }
+        }
     }
 
     /**

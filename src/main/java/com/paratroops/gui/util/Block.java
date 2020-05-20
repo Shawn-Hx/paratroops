@@ -54,6 +54,13 @@ public class Block extends JLayeredPane {
     }
 
     /**
+     * 重置该单元格
+     */
+    public void resetBlock(){
+        this.soldier = null;
+    }
+
+    /**
      * 判断单元格中是否有士兵
      */
     public boolean containsSoldier() {
