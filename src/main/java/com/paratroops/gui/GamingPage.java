@@ -1,15 +1,19 @@
 package com.paratroops.gui;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
-import javax.swing.JButton;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import com.paratroops.dto.GameDTO;
+import com.paratroops.entity.Soldier;
 import com.paratroops.gui.util.Block;
 import com.paratroops.util.CipherUtils;
+import com.paratroops.util.TroopUtils;
 import com.paratroops.util.impl.CipherUtilsImpl;
+import com.paratroops.util.impl.TroopUtilsImpl;
 
 /**
  * 游戏页
@@ -30,7 +34,39 @@ public class GamingPage extends JPanel {
      * 游戏地图对象（包括地图上的士兵）
      */
     private Map map;
-    
+
+    private TroopUtils troopUtils = TroopUtilsImpl.getInstance();
+
+    private class IdentificationEachListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            //check是不是有两个士兵被选中
+            if(map.ifTwoSoldiersSelected()){
+                //若是，则进行两两认证
+                List<Soldier> soldiers = map.getSelectedTwoSoilders();
+                boolean result = false;
+                result = troopUtils.authenticate(soldiers.get(0),soldiers.get(1));
+                if (result){
+                    //如果是同一阵营，则显示为同一阵营
+                    String sameTeamMessage = "同阵营";
+                    JOptionPane.showMessageDialog(null, sameTeamMessage);
+                }else{
+                    //如果不是，就提示不是同一阵营
+                    String differentTeamMessage = "不同阵营";
+                    JOptionPane.showMessageDialog(null, differentTeamMessage, "标题",JOptionPane.ERROR_MESSAGE);
+                }
+                //将map重置为没有士兵被选中的样子
+                map.resetBlockSelection();
+
+            }else{
+                // do nothing
+                JOptionPane.showMessageDialog(null, "请选中任意两个士兵", "标题",JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+
     public GamingPage(WindowPage window, GameDTO gameDto) {
         this.gameDto = gameDto;
 
@@ -38,6 +74,7 @@ public class GamingPage extends JPanel {
         JPanel procedurePanel = new JPanel();
         //初始化关键过程的各个button
         JButton identificationEach = new JButton("两两认证");
+        identificationEach.addActionListener(new IdentificationEachListener());
         JButton identificationFinal = new JButton("认证结果");
         JButton rankCompareEach = new JButton("军衔比较");
         JButton rankCompareFinal = new JButton("选举结果");
@@ -95,4 +132,6 @@ public class GamingPage extends JPanel {
             block.setSoldier(soldier);
         }
     }
+
+
 }
