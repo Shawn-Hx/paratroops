@@ -27,6 +27,11 @@ public class Block extends JLayeredPane {
 
     private static final URL BLOCK_SELECTED = App.class.getClassLoader().getResource("block_selected.jpg");
 
+    private static final URL SHOW_HIGHER_RANK_RESULT = App.class.getClassLoader().getResource("Higher_rank.png");
+
+    private static final URL SHOW_LOWER_RANK_RESULT = App.class.getClassLoader().getResource("Lower_rank.png");
+
+
     private int x;
 
     private int y;
@@ -40,6 +45,7 @@ public class Block extends JLayeredPane {
         this.setBounds(x, y, BLOCK_WIDTH, BLOCK_HEIGHT);
         Picture pic = new Picture(BLOCK_URL, 0, 0, BLOCK_WIDTH, BLOCK_HEIGHT);
         this.add(pic, Integer.valueOf(0));           // 把草地图片放在最底层
+        this.repaint();
     }
 
     /**
@@ -66,6 +72,7 @@ public class Block extends JLayeredPane {
     public void setSelected(){
         Picture selected_background = new Picture(BLOCK_SELECTED, 0, 0, BLOCK_WIDTH, BLOCK_HEIGHT);
         this.add(selected_background,Integer.valueOf(1));
+        this.repaint();
     }
 
     /**
@@ -73,6 +80,24 @@ public class Block extends JLayeredPane {
      */
     public void resetSelected(){
         this.remove(Integer.valueOf(1));
+        this.repaint();
+    }
+
+    /**
+     * 如果该格的士兵军衔更高，则在士兵的大头上显示大
+     */
+    public void showHigherRankResult(){
+        Picture higher_rank_background = new Picture(SHOW_HIGHER_RANK_RESULT,0,0,BLOCK_WIDTH, BLOCK_HEIGHT);
+        this.add(higher_rank_background,Integer.valueOf(3));
+        this.repaint();
+    }
+
+    /**
+     * 如果该格的士兵军衔更低，则在士兵的大头上显示小
+     */
+    public void showLowerRankResult(){
+        Picture lower_rank_background = new Picture(SHOW_LOWER_RANK_RESULT,0,0,BLOCK_WIDTH, BLOCK_HEIGHT);
+        this.add(lower_rank_background,Integer.valueOf(3));
         this.repaint();
     }
 

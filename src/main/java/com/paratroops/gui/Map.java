@@ -110,6 +110,26 @@ public class Map extends JPanel {
     }
 
     /**
+     * 如果是第一个选中的士兵军衔较高
+     */
+    public void firstSolderHasHigherRank(){
+        Block firstSelected = selectedBlocks.get(0);
+        Block secondSelected = selectedBlocks.get(1);
+        firstSelected.showHigherRankResult();
+        secondSelected.showLowerRankResult();
+    }
+
+    /**
+     * 如果是第二个选中的士兵军衔较高
+     */
+    public void secondSolderHasHigherRand(){
+        Block firstSelected = selectedBlocks.get(0);
+        Block secondSelected = selectedBlocks.get(1);
+        firstSelected.showLowerRankResult();
+        secondSelected.showHigherRankResult();
+    }
+
+    /**
      * Block Listener，用于选中两个士兵(背景变红)
      */
     private class BlockMouseListener implements MouseListener {

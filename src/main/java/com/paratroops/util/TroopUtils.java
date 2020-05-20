@@ -26,11 +26,12 @@ public interface TroopUtils {
      * @return 校验方是否成功认证发起方身份
      */
     public boolean authenticate(Soldier requester, Soldier checker);
-    
+
+
     /**
      * 军衔比较
      * @param requester 军衔比较请求发起方
-     * @param checker 军衔比较回复方
+     * @param responser 军衔比较回复方
      * @return 发起方军衔是否高于回复方
      */
     public boolean compareRank(Soldier requester, Soldier responser);
