@@ -143,7 +143,6 @@ public class Map extends JPanel {
                     first_solder_selected = blockClicked.getSoldier();
                 }
             }
-
         }
 
         @Override
