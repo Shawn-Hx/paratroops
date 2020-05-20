@@ -11,6 +11,11 @@ import java.util.Random;
 public class TroopUtilsImpl implements TroopUtils {
 
     /**
+     * 开箱明文数值的取值上界
+     */
+    public static final int BOX_KEY_UPPER_BOUNDS = 2048;
+
+    /**
      * 持有CipherUtils引用
      */
     private CipherUtils cipherUtils = CipherUtilsImpl.getInstance();

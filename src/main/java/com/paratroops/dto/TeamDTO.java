@@ -2,6 +2,7 @@ package com.paratroops.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.paratroops.entity.Team;
 import com.paratroops.gui.JSoldier;
@@ -33,7 +34,7 @@ public class TeamDTO {
     /**
      * 装备箱明文
      */
-    private byte[] boxKey;
+    private int boxKey;
 
     /**
      * 士兵序列
@@ -47,7 +48,8 @@ public class TeamDTO {
         this.numHighestRank = numHighestRank;
 
         // 生成开箱明文
-        boxKey = cipherUtils.genBytes();
+        Random random = new Random();
+        boxKey = random.nextInt(TroopUtilsImpl.BOX_KEY_UPPER_BOUNDS);
 
         // 生成士兵序列
         soldiers = new ArrayList<JSoldier>(numSoldiers);
@@ -60,15 +62,14 @@ public class TeamDTO {
         // 分发队友密钥对
         troopUtils.despatchPublicKeys(soldiers);
         // 分发开箱密钥对
-        // TODO
-//        troopUtils.despathBoxKeyPairs(soldiers, threshold, boxKey);
+        troopUtils.despathBoxKeyPairs(soldiers, threshold, boxKey);
     }
 
 	public List<JSoldier> getJSoldierList() {
 		return soldiers;
     }
     
-    public byte[] getBoxKey() {
+    public int getBoxKey() {
         return boxKey;
     }
 
