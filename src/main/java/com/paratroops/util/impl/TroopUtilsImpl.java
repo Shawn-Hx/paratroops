@@ -33,9 +33,7 @@ public class TroopUtilsImpl implements TroopUtils {
     public void despatchPublicKeys(List<? extends Soldier> soldiers) {
         for (Soldier soldier : soldiers) {
             for (Soldier teammate : soldiers) {
-                if (soldier == teammate) {
-                    soldier.addTeamMate(teammate);
-                }
+                soldier.addTeamMate(teammate);
             }
         }
     }
