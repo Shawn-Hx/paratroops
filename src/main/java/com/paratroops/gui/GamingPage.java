@@ -60,7 +60,6 @@ public class GamingPage extends JPanel {
                         map.resetRankCompare();
                         //将map重置为没有士兵被选中的样子
                         map.resetBlockSelection();
-                        System.out.println("!!");
                     }
                 });
 
