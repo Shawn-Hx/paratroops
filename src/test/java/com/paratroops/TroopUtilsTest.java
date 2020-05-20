@@ -23,7 +23,7 @@ public class TroopUtilsTest extends TestCase {
         soldiers.add(new Soldier(4, cipherUtils));
         soldiers.add(new Soldier(5, cipherUtils));
 
-        byte[] secretBoxKey = new byte[]{23};
+        int secretBoxKey = 23;
         int threshold = 3;
         troopUtils.despathBoxKeyPairs(soldiers, threshold, secretBoxKey);
 

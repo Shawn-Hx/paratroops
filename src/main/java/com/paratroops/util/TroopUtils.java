@@ -17,7 +17,7 @@ public interface TroopUtils {
      * @param threshold 开箱门限，至少{@code threshold}个士兵才能开箱
      * @param boxKey 待加密的箱子明文
      */
-    public void despathBoxKeyPairs(List<? extends Soldier> soldiers, int threshold, byte[] boxKey);
+    public void despathBoxKeyPairs(List<? extends Soldier> soldiers, int threshold, int boxKey);
 
     /**
      * 身份认证
@@ -52,5 +52,5 @@ public interface TroopUtils {
      * @param boxKey 箱子明文
      * @return 是否开箱成功
      */
-    public boolean openBox(List<? extends Soldier> soldiers, byte[] boxKey);
+    public boolean openBox(List<? extends Soldier> soldiers, int boxKey);
 }

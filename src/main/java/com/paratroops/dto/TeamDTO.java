@@ -60,7 +60,8 @@ public class TeamDTO {
         // 分发队友密钥对
         troopUtils.despatchPublicKeys(soldiers);
         // 分发开箱密钥对
-        troopUtils.despathBoxKeyPairs(soldiers, threshold, boxKey);
+        // TODO
+//        troopUtils.despathBoxKeyPairs(soldiers, threshold, boxKey);
     }
 
 	public List<JSoldier> getJSoldierList() {
