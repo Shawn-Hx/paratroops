@@ -96,7 +96,6 @@ public class GamingPage extends JPanel {
                 }
                 //将map重置为没有士兵被选中的样子
                 map.resetBlockSelection();
-
             }else{
                 // do nothing
                 JOptionPane.showMessageDialog(null, "请选中任意两个士兵", "标题",JOptionPane.ERROR_MESSAGE);
