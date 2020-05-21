@@ -82,8 +82,8 @@ public class TroopUtilsImpl implements TroopUtils {
     }
 
     @Override
-    public Soldier electLeader(List<? extends Soldier> soldiers) {
-        return null;
+    public Soldier selectLeader(List<? extends Soldier> soldiers) {
+        return soldiers.get(0);
     }
 
     @Override

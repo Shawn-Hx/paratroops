@@ -32,6 +32,7 @@ public class JSoldier extends Soldier {
 
     private Picture defaultPic = new Picture(WHITE_SOLDIER,0,0, Block.BLOCK_WIDTH, Block.BLOCK_HEIGHT);
 
+
     public JSoldier(int rank, CipherUtils cipherUtils, int posX, int posY, Team team) {
         super(rank, cipherUtils);
         this.posX = posX;
