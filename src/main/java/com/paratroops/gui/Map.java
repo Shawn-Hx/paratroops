@@ -29,10 +29,16 @@ public class Map extends JPanel {
 
     private Soldier second_solder_selected = null;
 
+    /**
+     * 该部分用于两两认证以及两两军衔比较
+     */
     private List<Block> selectedBlocks = new ArrayList<Block>();
 
     private GameDTO gameDto;
 
+    private boolean select_multi_blocks = false;
+
+    private List<Block> blocksToOpenBox = new ArrayList<Block>();
 
     /**
      * 地图单元格阵列
@@ -204,6 +210,43 @@ public class Map extends JPanel {
     }
 
     /**
+     * 将map设置为可以选择多个士兵的状态
+     */
+    public void setSelectBlocksToOpenBox() {
+        this.select_multi_blocks = true;
+    }
+
+    /**
+     *
+     * @return 返回被选中用于开箱的blocks
+     */
+    public List<Block> getSelectedBlocksToOpenBox() {
+        return blocksToOpenBox;
+    }
+
+    /**
+     * 开箱成功后重置map的状态
+     */
+    public void resetSelectBlocksToOpenBox() {
+        this.select_multi_blocks = false;
+        for (Block block: blocksToOpenBox) {
+            block.resetSelected();
+        }
+        blocksToOpenBox.clear();
+    }
+
+    /**
+     * 检查被选中的两个士兵是不是同一阵营
+     * @return
+     */
+    public boolean checkSelectedTwoSoildersIsSameGroup() {
+        Block block0 = this.selectedBlocks.get(0);
+        Block block1 = this.selectedBlocks.get(1);
+        return (block0.getSoldier().team == block1.getSoldier().team);
+    }
+
+
+    /**
      * Block Listener，用于选中两个士兵(背景变红)
      */
     private class BlockMouseListener implements MouseListener {
@@ -211,32 +254,54 @@ public class Map extends JPanel {
         @Override
         public void mouseClicked(MouseEvent e) {
             Block blockClicked = (Block) e.getSource();
-            //判断这个格子上是不是有soldier
-            //没有就什么都不做
-            if(!blockClicked.containsSoldier()){
-                return;
-            }else{
-                //check 是不是已经有格子被选中了
-                if (one_block_selected){
-                    //那么这个格子也被选中
-                    if(two_block_selected){
-                        //什么都不做，直到有什么过程结束
+            if (!select_multi_blocks){
+                //判断这个格子上是不是有soldier
+                //没有就什么都不做
+                if(!blockClicked.containsSoldier()){
+                    return;
+                }else{
+                    //check 是不是已经有格子被选中了
+                    if (one_block_selected){
+                        //那么这个格子也被选中
+                        if(two_block_selected){
+                            //什么都不做，直到有什么过程结束
+                        }else{
+                            two_block_selected = true;
+                            selectedBlocks.add(blockClicked);
+                            //格子变色
+                            blockClicked.setSelected();
+                            second_solder_selected = blockClicked.getSoldier();
+                        }
                     }else{
-                        two_block_selected = true;
+                        //如果这是第一个
+                        one_block_selected = true;
                         selectedBlocks.add(blockClicked);
                         //格子变色
                         blockClicked.setSelected();
-                        second_solder_selected = blockClicked.getSoldier();
+                        first_solder_selected = blockClicked.getSoldier();
                     }
+                }
+            }else{
+                //此时可以选择多个士兵，用于开箱
+                if(!blockClicked.containsSoldier()){
+                    return;
                 }else{
-                    //如果这是第一个
-                    one_block_selected = true;
-                    selectedBlocks.add(blockClicked);
-                    //格子变色
-                    blockClicked.setSelected();
-                    first_solder_selected = blockClicked.getSoldier();
+                    //check 是不是同组的，不同组不让选
+                    if (blocksToOpenBox.size() == 0){
+                        blockClicked.setSelected();
+                        blocksToOpenBox.add(blockClicked);
+                    }else{
+                        if(blockClicked.getSoldier().team != blocksToOpenBox.get(0).getSoldier().team){
+                            JOptionPane.showMessageDialog(null, "不能选择不同队伍的人来开箱", "标题",JOptionPane.ERROR_MESSAGE);
+                        }else{
+                            blockClicked.setSelected();
+                            blocksToOpenBox.add(blockClicked);
+                        }
+                    }
+
                 }
             }
+
         }
 
         @Override

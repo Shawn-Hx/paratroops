@@ -55,7 +55,7 @@ public class TeamDTO {
         soldiers = new ArrayList<JSoldier>(numSoldiers);
         List<Integer> ranks = cipherUtils.genRandomRankList(numSoldiers, JSoldier.HIGHEST_RANK, numHighestRank);
         for (int i=0; i<numSoldiers; ++i) {
-            soldiers.add(new JSoldier(ranks.get(i), cipherUtils, 0, 0, team));
+            soldiers.add(new JSoldier(ranks.get(i)+1, cipherUtils, 0, 0, team));
         }
 
         TroopUtils troopUtils = TroopUtilsImpl.getInstance();

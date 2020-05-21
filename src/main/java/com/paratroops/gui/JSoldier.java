@@ -38,8 +38,17 @@ public class JSoldier extends Soldier {
         this.posX = posX;
         this.posY = posY;
         this.team = team;
-
-        pic = new Picture(team.getResourceURL(rank), 0, 0, Block.BLOCK_WIDTH, Block.BLOCK_HEIGHT);
+        StringBuilder stringBuilder = new StringBuilder();
+        if (team == Team.RED){
+            stringBuilder.append("RedSoldier_rank_");
+        }else{
+            stringBuilder.append("BlueSoldier_rank_");
+        }
+        stringBuilder.append(this.rank);
+        stringBuilder.append(".png");
+        URL picWithRank = App.class.getClassLoader().getResource(stringBuilder.toString());
+//        System.out.println(stringBuilder.toString());
+        pic = new Picture(picWithRank, 0, 0, Block.BLOCK_WIDTH, Block.BLOCK_HEIGHT);
     }
 
     public Picture getPicture() {
