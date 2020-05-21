@@ -248,6 +248,10 @@ public class GamingPage extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            shownIndex = 0;
+            randTimer.stop();
+//            map.showAuthenticationResult();
+            map.showAuthenticationResult();
             //弹出提示，选择多个士兵
             JOptionPane.showMessageDialog(null, "请选择多个士兵来打开补给");
             map.setSelectBlocksToOpenBox();
@@ -335,6 +339,9 @@ public class GamingPage extends JPanel {
         procedurePanel.add(openBox);
 
         returnButton.addActionListener(e -> {
+            shownIndex = 0;
+            randTimer.stop();
+            map.showAuthenticationResult();
             map.resetBlockSelection();
             window.toTitle();
         });
