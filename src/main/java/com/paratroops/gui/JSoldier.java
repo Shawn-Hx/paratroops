@@ -39,7 +39,7 @@ public class JSoldier extends Soldier {
         this.posY = posY;
         this.team = team;
 
-        pic = new Picture(team.getResourceURL(), 0, 0, Block.BLOCK_WIDTH, Block.BLOCK_HEIGHT);
+        pic = new Picture(team.getResourceURL(rank), 0, 0, Block.BLOCK_WIDTH, Block.BLOCK_HEIGHT);
     }
 
     public Picture getPicture() {

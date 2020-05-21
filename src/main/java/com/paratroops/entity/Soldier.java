@@ -11,7 +11,7 @@ import com.paratroops.util.CipherUtils;
  */
 public class Soldier {
     /**
-     * 最高军衔
+     * 最高军衔，军衔取值：[1, HIGHEST_RANK]
      */
     public static final int HIGHEST_RANK = 9;
 

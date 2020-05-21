@@ -133,12 +133,12 @@ public class CipherUtilsImpl implements CipherUtils {
         List<Integer> ranks = new ArrayList<Integer>(numRank);
         int i = 0, numFirst = numRank - numHighestRank;
         for (i=0; i<numFirst; ++i) {
-            ranks.add(random.nextInt(highestRank));     // 首先生成不含最高军衔的序列
+            ranks.add(random.nextInt(highestRank - 1) + 1);     // 首先生成不含最高军衔的序列，军衔最小值为1
         }
         for (; i<numRank; ++i) {
-            ranks.add(highestRank);                     // 在原序列后添加重复的最高军衔
+            ranks.add(highestRank);                             // 在原序列后添加重复的最高军衔
         }
-        Collections.shuffle(ranks);                     // 打乱军衔序列，防止最高军衔扎堆在最后
+        Collections.shuffle(ranks);                             // 打乱军衔序列，防止最高军衔扎堆在最后
         return ranks;
     }
 
