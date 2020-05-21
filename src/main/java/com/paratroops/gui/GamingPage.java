@@ -237,6 +237,9 @@ public class GamingPage extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            shownIndex = 0;
+            randTimer.stop();
+//            map.showAuthenticationResult();
             map.showAuthenticationResult();
         }
     }
