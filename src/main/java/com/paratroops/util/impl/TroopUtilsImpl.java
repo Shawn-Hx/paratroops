@@ -15,10 +15,6 @@ public class TroopUtilsImpl implements TroopUtils {
      */
     public static final int BOX_KEY_UPPER_BOUNDS = 2048;
 
-
-
-
-
     /**
      * 持有CipherUtils引用
      */
