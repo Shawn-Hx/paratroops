@@ -10,6 +10,7 @@ import javax.swing.*;
 
 import com.paratroops.dto.GameDTO;
 import com.paratroops.entity.Soldier;
+import com.paratroops.entity.Team;
 import com.paratroops.gui.util.Block;
 import com.paratroops.util.CipherUtils;
 import com.paratroops.util.TroopUtils;
@@ -65,7 +66,18 @@ public class GamingPage extends JPanel {
                 //若是，则进行两两军衔比较
                 List<Soldier> soldiers = map.getSelectedTwoSoilders();
                 boolean result = false;
-                result = troopUtils.compareRank(soldiers.get(0),soldiers.get(1));
+                //check两个士兵是不是同一个阵营
+                Soldier soldier0 = soldiers.get(0);
+                Soldier soldier1 = soldiers.get(1);
+                boolean isSameGroup = map.checkSelectedTwoSoildersIsSameGroup();
+                if(!isSameGroup){
+                    JOptionPane.showMessageDialog(null, "两个士兵是不同阵营不能比较", "标题",JOptionPane.ERROR_MESSAGE);
+                    //将map重置为没有士兵被选中的样子
+                    map.resetBlockSelection();
+                    return;
+                }
+
+                result = troopUtils.compareRank(soldier0,soldier1);
                 if (result){
                     //如果是第一个选中的士兵军衔高
                     map.firstSolderHasHigherRank();
@@ -232,6 +244,53 @@ public class GamingPage extends JPanel {
         }
     }
 
+    private class SelectMultiSoldiers implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            //弹出提示，选择多个士兵
+            JOptionPane.showMessageDialog(null, "请选择多个士兵来打开补给");
+            map.setSelectBlocksToOpenBox();
+        }
+    }
+
+    /**
+     * 打开补给按钮的监听器
+     */
+    private class OpenBoxListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            //check士兵数量，不能啥都不选
+            List <Block> selectedBlocksToOpenBox = map.getSelectedBlocksToOpenBox();
+            List <Soldier> selectedSoldiersToOpenBox = new ArrayList<Soldier>();
+            for (Block block:selectedBlocksToOpenBox){
+                selectedSoldiersToOpenBox.add(block.getSoldier());
+            }
+            if(selectedSoldiersToOpenBox.size() == 0){
+                JOptionPane.showMessageDialog(null, "请至少选中一个", "标题",JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            int relatedBoxKey = 0;
+            if (selectedBlocksToOpenBox.get(0).getSoldier().team == Team.RED){
+                relatedBoxKey = gameDto.getRedTeamDTO().getBoxKey();
+            }else{
+                relatedBoxKey = gameDto.getBlueTeamDTO().getBoxKey();
+            }
+            boolean canOpenBox = troopUtils.openBox(selectedSoldiersToOpenBox,relatedBoxKey);
+            if (canOpenBox){
+                //成功开箱就提示能够开箱
+                JOptionPane.showMessageDialog(null, "开箱成功");
+                //成功后重置
+                map.resetSelectBlocksToOpenBox();
+            }else{
+                //不成功提示开箱人数不足
+                JOptionPane.showMessageDialog(null, "开箱人数不足", "标题",JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
+    }
 
     private class IdentificationFinalListener implements ActionListener{
 
@@ -261,14 +320,18 @@ public class GamingPage extends JPanel {
         rankCompareFinalRed.addActionListener(new RankCompareFinalRedListener());
         JButton rankCompareFinalBlue = new JButton("蓝方选举");
         rankCompareFinalBlue.addActionListener(new RankCompareFinalBlueListener());
+        JButton selectMultiSoldiers = new JButton("选择多个");
+        selectMultiSoldiers.addActionListener(new SelectMultiSoldiers());
         JButton openBox = new JButton("打开补给");
+        openBox.addActionListener(new OpenBoxListener());
 
-        procedurePanel.setLayout(new GridLayout(6,1));
+        procedurePanel.setLayout(new GridLayout(7,1));
         procedurePanel.add(identificationEach);
         procedurePanel.add(identificationFinal);
         procedurePanel.add(rankCompareEach);
         procedurePanel.add(rankCompareFinalRed);
         procedurePanel.add(rankCompareFinalBlue);
+        procedurePanel.add(selectMultiSoldiers);
         procedurePanel.add(openBox);
 
         returnButton.addActionListener(e -> {
