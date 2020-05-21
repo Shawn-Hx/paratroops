@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import com.paratroops.dto.GameDTO;
 import com.paratroops.entity.Soldier;
+import com.paratroops.entity.Team;
 import com.paratroops.gui.util.Block;
 
 import java.awt.event.MouseEvent;
@@ -166,6 +167,40 @@ public class Map extends JPanel {
                 }
             }
         }
+    }
+
+    /**
+     * 返回所有包含蓝色士兵的block
+     */
+    public List<Block> getBlueGroupBlocks() {
+        ArrayList<Block> blueGroupBlocks = new ArrayList<Block>();
+        int[] mapSize = this.gameDto.getSIZE();
+
+        for (int i=0; i<mapSize[0]; ++i) {
+            for (int j=0; j<mapSize[1]; ++j) {
+                if(blocks[i][j].containsSoldier()&&blocks[i][j].getSoldier().team == Team.BLUE){
+                    blueGroupBlocks.add(blocks[i][j]);
+                }
+            }
+        }
+        return blueGroupBlocks;
+    }
+
+    /**
+     * 返回所有包含红色士兵的block
+     */
+    public List<Block> getRedGroupBlocks() {
+        ArrayList<Block> blueGroupBlocks = new ArrayList<Block>();
+        int[] mapSize = this.gameDto.getSIZE();
+
+        for (int i=0; i<mapSize[0]; ++i) {
+            for (int j=0; j<mapSize[1]; ++j) {
+                if(blocks[i][j].containsSoldier()&&blocks[i][j].getSoldier().team == Team.RED){
+                    blueGroupBlocks.add(blocks[i][j]);
+                }
+            }
+        }
+        return blueGroupBlocks;
     }
 
     /**

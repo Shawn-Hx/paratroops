@@ -44,7 +44,7 @@ public interface TroopUtils {
     /**
      * 从一队士兵中按照军衔选举指挥官
      */
-    public Soldier electLeader(List<? extends Soldier> soldiers);
+    public Soldier selectLeader(List<? extends Soldier> soldiers);
 
     /**
      * 判断给定的这些士兵能否开箱

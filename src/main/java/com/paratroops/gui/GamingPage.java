@@ -3,6 +3,7 @@ package com.paratroops.gui;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
@@ -24,6 +25,25 @@ public class GamingPage extends JPanel {
      * default serial version id
      */
     private static final long serialVersionUID = 1L;
+
+    /**
+     * 每个队伍的士兵数量
+     */
+    private int numSoldiersEach = 0;
+
+    /**
+     * 用来展示军衔排序的timer
+     */
+    private Timer randTimer = new Timer(1000, new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent e) {
+        }
+    });
+
+    /**
+     * 军衔排序当前展示的Index
+     */
+    private int shownIndex = 0;
 
     /**
      * 游戏数据对象
@@ -63,7 +83,7 @@ public class GamingPage extends JPanel {
                     }
                 });
 
-                timer.start();
+                timer.restart();
                 timer.setRepeats(false);
 //                timer.stop();
 
@@ -106,16 +126,112 @@ public class GamingPage extends JPanel {
         }
     }
 
-//    private class RankCompareFinalListener implements ActionListener{
-//
-//        @Override
-//        public void actionPerformed(ActionEvent e) {
-//            Soldier commander1 = null;
-//            Soldier commander2 = null;
-//            // 首先把指挥官的照片变成对应的加了红旗的
-//
-//        }
-//    }
+    private class RankCompareFinalRedListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            shownIndex = 0;
+            randTimer.stop();
+            map.showAuthenticationResult();
+
+            //收集红方Soldier,然后选举指挥官
+            List<Block> redBlocks = map.getRedGroupBlocks();
+
+            List<Soldier> redSoldiers = new ArrayList<Soldier>();
+
+
+            for (Block block:redBlocks) {
+                redSoldiers.add(block.getSoldier());
+            }
+
+            Soldier commanderRed = troopUtils.selectLeader(redSoldiers);
+            // 首先把指挥官的照片变成对应的加了红旗的
+
+            for (Block block:redBlocks) {
+                if(block.getSoldier().equals(commanderRed)) {
+                    block.showCommander();
+                }
+            }
+
+            troopUtils.sortByRank(redSoldiers);
+            //按照军衔顺序依次点亮
+
+            randTimer = new Timer(1000, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent arg0) {
+                    //将格子的选中效果重置
+                    if (shownIndex == numSoldiersEach){
+                        randTimer.stop();
+                        return;
+                    }
+                    Soldier shownSoldier = redSoldiers.get(shownIndex);
+                    for (Block block:redBlocks) {
+                        if(block.getSoldier().equals(shownSoldier)) {
+                            block.highLightForAWhile();
+                        }
+                    }
+                    shownIndex += 1;
+                }
+            });
+
+            randTimer.start();
+            randTimer.setRepeats(true);
+        }
+    }
+
+    private class RankCompareFinalBlueListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            shownIndex = 0;
+            randTimer.stop();
+            map.showAuthenticationResult();
+            //收集蓝方Soldier,然后选举指挥官
+            List<Block> blueBlocks = map.getBlueGroupBlocks();
+
+            List<Soldier> blueSoldiers = new ArrayList<Soldier>();
+
+            for (Block block:blueBlocks) {
+                blueSoldiers.add(block.getSoldier());
+            }
+
+
+            Soldier commanderBlue = troopUtils.selectLeader(blueSoldiers);
+            // 首先把指挥官的照片变成对应的加了红旗的
+
+            for (Block block:blueBlocks) {
+                if(block.getSoldier().equals(commanderBlue)) {
+                    block.showCommander();
+                }
+            }
+
+            troopUtils.sortByRank(blueSoldiers);
+            //按照军衔顺序依次点亮
+
+            randTimer = new Timer(1000, new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent arg0) {
+                    //将格子的选中效果重置
+                    if (shownIndex == numSoldiersEach){
+                        randTimer.stop();
+                        return;
+                    }
+                    Soldier shownSoldier = blueSoldiers.get(shownIndex);
+                    for (Block block:blueBlocks) {
+                        if(block.getSoldier().equals(shownSoldier)) {
+                            block.highLightForAWhile();
+                        }
+                    }
+                    shownIndex += 1;
+                }
+            });
+
+            randTimer.start();
+            randTimer.setRepeats(true);
+
+        }
+    }
+
 
     private class IdentificationFinalListener implements ActionListener{
 
@@ -138,14 +254,18 @@ public class GamingPage extends JPanel {
         JButton rankCompareEach = new JButton("军衔比较");
         rankCompareEach.addActionListener(new RankCompareEachListener());
 //        JButton rankCompareFromGroups = new JButton("选举军官");
-        JButton rankCompareFinal = new JButton("选举结果");
+        JButton rankCompareFinalRed = new JButton("红方选举");
+        rankCompareFinalRed.addActionListener(new RankCompareFinalRedListener());
+        JButton rankCompareFinalBlue = new JButton("蓝方选举");
+        rankCompareFinalBlue.addActionListener(new RankCompareFinalBlueListener());
         JButton openBox = new JButton("打开补给");
 
-        procedurePanel.setLayout(new GridLayout(5,1));
+        procedurePanel.setLayout(new GridLayout(6,1));
         procedurePanel.add(identificationEach);
         procedurePanel.add(identificationFinal);
         procedurePanel.add(rankCompareEach);
-        procedurePanel.add(rankCompareFinal);
+        procedurePanel.add(rankCompareFinalRed);
+        procedurePanel.add(rankCompareFinalBlue);
         procedurePanel.add(openBox);
 
         returnButton.addActionListener(e -> {
@@ -181,6 +301,7 @@ public class GamingPage extends JPanel {
      */
     private void placeSoldiers(List<JSoldier> soldiers) {
         int numSoldiers = soldiers.size(), i = 0;
+        this.numSoldiersEach = numSoldiers/2;
         CipherUtils cipherUtils = CipherUtilsImpl.getInstance();
         int[] size = gameDto.getSIZE();
         List<Integer> posList = cipherUtils.samplePositions(size, numSoldiers);

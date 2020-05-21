@@ -1,10 +1,12 @@
 package com.paratroops.gui.util;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
-import javax.swing.JLayeredPane;
+import javax.swing.*;
 
 import com.paratroops.App;
 import com.paratroops.entity.Team;
@@ -36,6 +38,9 @@ public class Block extends JLayeredPane {
 
     private static final URL SHOW_LOWER_RANK_RESULT_RED = App.class.getClassLoader().getResource("RedSoldier_lower.jpg");
 
+    private static final URL SHOW_COMMANDER_BLUE = App.class.getClassLoader().getResource("BlueSoldier_leader.jpg");
+
+    private static final URL SHOW_COMMANDER_RED = App.class.getClassLoader().getResource("RedSoldier_leader.jpg");
 
     private int x;
 
@@ -141,5 +146,38 @@ public class Block extends JLayeredPane {
     public void resetRankCompareBlock() {
         this.remove(Integer.valueOf(0));
         this.repaint();
+    }
+
+    /**
+     * 该格子变成对应的指挥官
+     */
+    public void showCommander() {
+        Picture leader = null;
+        this.remove(Integer.valueOf(0));
+        if(this.getSoldier().team == Team.RED){
+            leader = new Picture(SHOW_COMMANDER_RED,0,0,BLOCK_WIDTH, BLOCK_HEIGHT);
+        }else{
+            leader = new Picture(SHOW_COMMANDER_BLUE,0,0,BLOCK_WIDTH, BLOCK_HEIGHT);
+        }
+        this.add(leader,Integer.valueOf(2));
+        this.repaint();
+    }
+
+    /**
+     * 由于军衔排序被点亮一下
+     */
+    public void highLightForAWhile() {
+        //1000 ms 后恢复原状
+        setSelected();
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                //将格子的选中效果重置
+                resetSelected();
+            }
+        });
+
+        timer.start();
+        timer.setRepeats(false);
     }
 }
