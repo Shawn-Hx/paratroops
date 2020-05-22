@@ -56,8 +56,16 @@ public class Soldier {
         return this.keyPair[0];
     }
 
+    public CipherKey getPrivateKey() {
+        return this.keyPair[1];
+    }
+
     public long[] getBoxKeyPair() {
         return this.boxKeyPair;
+    }
+
+    public int getRank() {
+        return this.rank;
     }
 
     public void setBoxKeyPair(long[] boxKeyPair) {
