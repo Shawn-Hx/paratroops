@@ -2,14 +2,12 @@ package com.paratroops.util.impl;
 
 import Jama.Matrix;
 import com.paratroops.entity.Soldier;
+import com.paratroops.gui.JSoldier;
 import com.paratroops.util.CipherUtils;
 import com.paratroops.util.TroopUtils;
 
 import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class TroopUtilsImpl implements TroopUtils {
 
@@ -279,9 +277,162 @@ public class TroopUtilsImpl implements TroopUtils {
         });
     }
 
+    //统计每个 voter 的投票情况
+    private int[] voting(List<Soldier> candidate, List<Soldier> voter, List<List<Soldier>> vote_map) {
+        int candidate_num = candidate.size();
+        int voter_num = voter.size();
+        // 每个候选人的最多得票数
+        int k = (int) (Math.floor(Math.log(voter_num)/Math.log(2)) + 1);
+        // 选举总位数
+        int bits = candidate_num*k;
+
+        // 由于当前记录编码使用 int 型，因此不支持数量特别多的 candidate 或 voter
+        int[] arr_vote = new int[voter_num];
+        // encode 每个 voter 的投票情况
+        char[] str_bits = new char[bits];
+        int i = 0;
+        String str;
+        for (i = 0;i < voter_num;i++){
+            Arrays.fill(str_bits, '0');
+            for(int j = 0;j < candidate_num;j++){
+                if (vote_map.get(i).contains(candidate.get(j))){
+                    // 为对应的候选者投一票
+                    str_bits[k*(j+1)-1] = '1';
+                }
+            }
+            str = new String(str_bits);
+            arr_vote[i] = Integer.parseInt(str, 2);
+        }
+        return arr_vote;
+    }
+
+    // difussion过程，混淆每个 voter 的投票情况
+    private int[][] casting(int []arr_vote) {
+        int voter_num = arr_vote.length;
+        int[][] transfer_matrix = new int[voter_num][voter_num];
+        Random random = new Random();
+
+        for(int i = 0;i < voter_num;i++) {
+            int tmp = arr_vote[i];
+            // 将第 i 个人的投票情况分散开
+            for(int j = 0;j < voter_num - 1;j++) {
+                transfer_matrix[i][j] = random.nextInt(tmp+1);
+                tmp = tmp - transfer_matrix[i][j];
+            }
+            transfer_matrix[i][voter_num - 1] = tmp;
+        }
+        // 每个 voter 向其他人广播自己的投票结果
+        return transfer_matrix;
+    }
+
+    // 随机验证 voter 的投票是否合法，统计得票数最高的候选者
+    private int[][] broadcast_vote(int[][] transfer_matrix, List<Soldier> candidate, List<Soldier> voter) {
+        int voter_num = voter.size();
+        int[] vote_sum = new int[voter_num];
+        int[][] broadcast = new int[voter_num][voter_num];
+
+        // 每个 voter 求和自己收到的投票情况
+        for (int i = 0; i < voter_num; i++) {
+            for (int j = 0; j < voter_num; j++) {
+                vote_sum[i] += transfer_matrix[j][i];
+            }
+        }
+        //每个 voter 向所有人广播自身求和结果
+        for (int i = 0; i < voter_num; i++) {
+            for (int j = 0; j < voter_num; j++) {
+                broadcast[i][j] = vote_sum[i];
+            }
+        }
+        return broadcast;
+    }
+
+    private int verify(int[][] broadcast, int index, int candidate_num, int voter_num){
+        int result = 0;
+        int[] arr_votes = new int[candidate_num];
+        for(int i = 0;i < voter_num;i++){
+            // 统计收到的全部信息
+            result += broadcast[i][index];
+        }
+
+        int k = (int) (Math.floor(Math.log(voter_num)/Math.log(2)) + 1); //每个候选人对应的二进制位数
+        String str = Integer.toBinaryString(result);
+
+        // 解析每个候选者的得票情况
+        int length = str.length();
+        for(int i = (candidate_num - 1);i >= 0;i--){
+            if(length >= k){
+                String tmp = str.substring(length - k, length);
+                arr_votes[i] = Integer.parseInt(tmp,2);
+            }else if(length > 0){
+                String tmp = str.substring(0, length);
+                arr_votes[i] = Integer.parseInt(tmp,2);
+            }else{
+                arr_votes[i] = 0;
+            }
+            length -= k;
+        }
+
+        int max_index = 0;
+        for(int i = 0;i < candidate_num;i++) {
+            if (arr_votes[i] > arr_votes[max_index]) {
+                max_index = i;
+            }
+        }
+//        System.out.println("投票结果：" + max_index);
+        return max_index;
+    }
+
+    private int electronicVoting(List<Soldier> candidate, List<Soldier> voter) {
+        Random rand = new Random();
+        List<List<Soldier>> vote_map = new ArrayList<>();
+        for (int i = 0;i < voter.size();i++){
+            List<Soldier> list = new ArrayList<>();
+            for (Soldier soldier : candidate) {
+                // 假设每位候选人有 1/3 的几率被选中
+                if (rand.nextInt(3) == 0) {
+                    list.add(soldier);
+                }
+            }
+            vote_map.add(list);
+        }
+        // 统计每个候选人的投票数
+        int[] arr_vote = voting(candidate, voter, vote_map);
+        int[][] transfer_matrix = casting(arr_vote);
+        int[][] broadcast = broadcast_vote(transfer_matrix, candidate, voter);
+        Random random = new Random();
+        int index = random.nextInt(voter.size());
+        // 输出任一士兵的验证结果
+        return verify(broadcast, index, candidate.size(), voter.size());
+    }
+
     @Override
     public Soldier selectLeader(List<? extends Soldier> soldiers) {
-        return soldiers.get(0);
+        sortByRank(soldiers);
+        if (soldiers.size() < 2 || !compareRank(soldiers.get(1), soldiers.get(0))){
+            return soldiers.get(0);
+        }
+        // 获取 rank 最高的所有士兵
+        List<Soldier> candidate = new ArrayList<>();
+        List<Soldier> voter = new ArrayList<>();
+        candidate.add(soldiers.get(0));
+        for (int i = 1;i < soldiers.size();i++){
+            if (compareRank(soldiers.get(i), soldiers.get(0))){
+                candidate.add(soldiers.get(i));
+            }else{
+                voter.add(soldiers.get(i));
+            }
+        }
+        System.out.println("有" + candidate.size() + "个士兵具有最高军衔");
+        System.out.println("有" + voter.size() + "个士兵进行投票");
+        // 没有投票的士兵，进行随机选取
+        if (voter.size() == 0){
+            Random random = new Random();
+            return candidate.get(random.nextInt(candidate.size()));
+        }
+        // 进行电子投票
+        int id = electronicVoting(candidate, voter);
+
+        return candidate.get(id);
     }
 
     @Override
