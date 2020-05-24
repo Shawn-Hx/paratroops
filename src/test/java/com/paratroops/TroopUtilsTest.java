@@ -68,6 +68,53 @@ public class TroopUtilsTest extends TestCase {
         assertEquals(sold.get(6), s3);
     }
 
+    public void testsortByRank() {
+        CipherUtils cipherUtils = CipherUtilsImpl.getInstance();
+        Soldier s1 = new Soldier(2, cipherUtils);
+        Soldier s2 = new Soldier(6, cipherUtils);
+        Soldier s3 = new Soldier(7, cipherUtils);
+        Soldier s4 = new Soldier(2, cipherUtils);
+        // rank 取 10 的时候会报错
+        Soldier s5 = new Soldier(10, cipherUtils);
+
+        List<Soldier> sold = new ArrayList<Soldier>();
+        sold.add(s1);
+        sold.add(s2);
+        sold.add(s3);
+        sold.add(s4);
+        sold.add(s5);
+
+        troopUtils.sortByRank(sold);
+    }
+
+    public void testSelectLeader() {
+        CipherUtils cipherUtils = CipherUtilsImpl.getInstance();
+        Soldier s1 = new Soldier(2, cipherUtils);
+        Soldier s2 = new Soldier(6, cipherUtils);
+        Soldier s3 = new Soldier(7, cipherUtils);
+        Soldier s4 = new Soldier(2, cipherUtils);
+        Soldier s5 = new Soldier(7, cipherUtils);
+
+        List<Soldier> sold = new ArrayList<Soldier>();
+        sold.add(s1);
+        sold.add(s2);
+        sold.add(s3);
+        sold.add(s4);
+        sold.add(s5);
+
+        // 选举指挥官
+        Soldier leader = troopUtils.selectLeader(sold);
+        assertEquals(7, leader.getRank());
+
+        Soldier s6 = new Soldier(4, cipherUtils);
+        Soldier s7 = new Soldier(9, cipherUtils);
+        sold.add(s6);
+        sold.add(s7);
+
+        leader = troopUtils.selectLeader(sold);
+        assertEquals(9, leader.getRank());
+    }
+
     public void testOpenBox() {
         List<Soldier> soldiers = new ArrayList<>();
         soldiers.add(new Soldier(1, cipherUtils));
