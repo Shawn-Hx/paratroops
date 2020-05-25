@@ -400,8 +400,9 @@ public class TroopUtilsImpl implements TroopUtils {
             if (arr_votes[i] > arr_votes[max_index]) {
                 max_index = i;
             }
+            System.out.println("第 " + (i + 1) + " 位候选者投票数量" + arr_votes[i]);
         }
-//        System.out.println("投票结果：" + max_index);
+        System.out.println("得票数最高的候选者：" + (max_index + 1));
         return max_index;
     }
 
@@ -429,7 +430,7 @@ public class TroopUtilsImpl implements TroopUtils {
     }
 
     @Override
-    public Soldier selectLeader(List<? extends Soldier> soldiers) {
+    public Soldier selectLeader(List<Soldier> soldiers) {
         sortByRank(soldiers);
         if (soldiers.size() < 2 || !compareRank(soldiers.get(1), soldiers.get(0))){
             return soldiers.get(0);
@@ -438,13 +439,14 @@ public class TroopUtilsImpl implements TroopUtils {
         List<Soldier> candidate = new ArrayList<>();
         List<Soldier> voter = new ArrayList<>();
         candidate.add(soldiers.get(0));
-        for (int i = 1;i < soldiers.size();i++){
-            if (compareRank(soldiers.get(i), soldiers.get(0))){
+        for (int i = 1;i < soldiers.size();i++) {
+            if (compareRank(soldiers.get(i), soldiers.get(0))) {
                 candidate.add(soldiers.get(i));
-            }else{
+            } else {
                 voter.add(soldiers.get(i));
             }
         }
+        System.out.println("—————————————— 电子投票算法开始 ————————————————");
         System.out.println("有" + candidate.size() + "个士兵具有最高军衔");
         System.out.println("有" + voter.size() + "个士兵进行投票");
         // 没有投票的士兵，进行随机选取
@@ -454,8 +456,12 @@ public class TroopUtilsImpl implements TroopUtils {
         }
         // 进行电子投票
         int id = electronicVoting(candidate, voter);
+        System.out.println("—————————————— 电子投票算法结束 ————————————————");
 
-        return candidate.get(id);
+        Soldier leader = soldiers.get(id);
+        soldiers.remove(id);
+        soldiers.add(0, leader);
+        return soldiers.get(0);
     }
 
     @Override
