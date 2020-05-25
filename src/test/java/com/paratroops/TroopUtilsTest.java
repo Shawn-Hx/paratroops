@@ -75,7 +75,7 @@ public class TroopUtilsTest extends TestCase {
         Soldier s3 = new Soldier(7, cipherUtils);
         Soldier s4 = new Soldier(2, cipherUtils);
         // rank 取 10 的时候会报错
-        Soldier s5 = new Soldier(10, cipherUtils);
+        Soldier s5 = new Soldier(9, cipherUtils);
 
         List<Soldier> sold = new ArrayList<Soldier>();
         sold.add(s1);
@@ -125,7 +125,7 @@ public class TroopUtilsTest extends TestCase {
 
         int secretBoxKey = 23;
         int threshold = 3;
-        troopUtils.despathBoxKeyPairs(soldiers, threshold, secretBoxKey);
+        troopUtils.dispatchBoxKeyPairs(soldiers, threshold, secretBoxKey);
 
         List<Soldier> openBoxSoldiers = new ArrayList<>();
 

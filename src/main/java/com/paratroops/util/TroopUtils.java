@@ -9,7 +9,7 @@ public interface TroopUtils {
      * 跳伞前给同一队伍的所有士兵分发其所有队友的公钥
      * @param soldiers 同一队伍的士兵
      */
-    public void despatchPublicKeys(List<? extends Soldier> soldiers);
+    public void dispatchPublicKeys(List<? extends Soldier> soldiers);
 
     /**
      * 跳伞前给同一队伍的所有士兵分发用于开箱的密钥对
@@ -17,7 +17,7 @@ public interface TroopUtils {
      * @param threshold 开箱门限，至少{@code threshold}个士兵才能开箱
      * @param boxKey 待加密的箱子明文
      */
-    public void despathBoxKeyPairs(List<? extends Soldier> soldiers, int threshold, int boxKey);
+    public void dispatchBoxKeyPairs(List<? extends Soldier> soldiers, int threshold, int boxKey);
 
     /**
      * 身份认证
