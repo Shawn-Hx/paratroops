@@ -13,7 +13,7 @@ public class Soldier {
     /**
      * 最高军衔
      */
-    public static final int HIGHEST_RANK = 9;
+    public static final int HIGHEST_RANK = 8;
 
 
     /**

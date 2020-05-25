@@ -165,8 +165,8 @@ public class GamingPage extends JPanel {
                 }
             }
 
-            troopUtils.sortByRank(redSoldiers);
-            //按照军衔顺序依次点亮
+            //troopUtils.sortByRank(redSoldiers);
+            //按照军衔顺序依次点亮，selectLeader 函数已经排过序，不需要再进行调用
 
             randTimer = new Timer(1000, new ActionListener() {
                 @Override
@@ -217,8 +217,8 @@ public class GamingPage extends JPanel {
                 }
             }
 
-            troopUtils.sortByRank(blueSoldiers);
-            //按照军衔顺序依次点亮
+//            troopUtils.sortByRank(blueSoldiers);
+            //按照军衔顺序依次点亮，selectLeader 函数已经排过序，不需要再进行调用
 
             randTimer = new Timer(1000, new ActionListener() {
                 @Override
