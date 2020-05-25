@@ -2,7 +2,6 @@ package com.paratroops.util.impl;
 
 import Jama.Matrix;
 import com.paratroops.entity.Soldier;
-import com.paratroops.gui.JSoldier;
 import com.paratroops.util.CipherUtils;
 import com.paratroops.util.TroopUtils;
 
@@ -15,6 +14,16 @@ public class TroopUtilsImpl implements TroopUtils {
      * 开箱明文数值的取值上界
      */
     public static final int BOX_KEY_UPPER_BOUNDS = 2048;
+
+    /**
+     * 日志字符串句子分隔符
+     */
+    public static final String SPLITTER = "\n";
+
+    /**
+     * 日志字符串对象
+     */
+    private StringBuilder logger;
 
     /**
      * 持有CipherUtils引用
@@ -34,6 +43,21 @@ public class TroopUtilsImpl implements TroopUtils {
     }
 
     private TroopUtilsImpl() {
+        logger = new StringBuilder();
+    }
+
+    /**
+     * 获取日志字符串
+     */
+    public String getLog() {
+        return logger.toString();
+    }
+
+    /**
+     * 清空日志字符串
+     */
+    public void clearLog() {
+        logger.delete(0, logger.length());
     }
 
     @Override
