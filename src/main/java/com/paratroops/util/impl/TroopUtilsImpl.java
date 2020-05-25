@@ -37,7 +37,7 @@ public class TroopUtilsImpl implements TroopUtils {
     }
 
     @Override
-    public void despatchPublicKeys(List<? extends Soldier> soldiers) {
+    public void dispatchPublicKeys(List<? extends Soldier> soldiers) {
         for (Soldier soldier : soldiers) {
             for (Soldier teammate : soldiers) {
                 soldier.addTeamMate(teammate);
@@ -46,7 +46,7 @@ public class TroopUtilsImpl implements TroopUtils {
     }
 
     @Override
-    public void despathBoxKeyPairs(List<? extends Soldier> soldiers, int threshold, int boxKey) {
+    public void dispatchBoxKeyPairs(List<? extends Soldier> soldiers, int threshold, int boxKey) {
         int n = soldiers.size();
         assert threshold <= n;
 
@@ -78,16 +78,15 @@ public class TroopUtilsImpl implements TroopUtils {
         return checker.checkAuthRequest(requester);
     }
 
-    @Override
     /**
      * 军衔比较
      *
      * @param requester 军衔比较请求发起方
-     * @param responsor 军衔比较回复方
+     * @param responser 军衔比较回复方
      * @return 发起方军衔是否高于回复方
      */
+    @Override
     public boolean compareRank(Soldier requester, Soldier responser) {
-        CipherUtilsImpl cipherutil = CipherUtilsImpl.getInstance();
         int[] result = new int[10];
         int compare;
         int prime;
@@ -99,7 +98,7 @@ public class TroopUtilsImpl implements TroopUtils {
             byte[] message = intToByteArray(randnum);
 
             //发起方用回复方的公钥对随机数加密后，减去发起方的军衔
-            byte[] randnumInt = cipherutil.encrypt(message, responser.getPublicKey());
+            byte[] randnumInt = cipherUtils.encrypt(message, responser.getPublicKey());
             byte[] randnumsub = byteSubtract(randnumInt, requester.getRank());
             byte[] randnumAdd;
 
@@ -113,7 +112,7 @@ public class TroopUtilsImpl implements TroopUtils {
                     randnumAdd = byteAdd(randnumsub);
                 else
                     randnumAdd = randnumsub;
-                byte[] tmp = cipherutil.decrypt(randnumAdd, responser.getPrivateKey());
+                byte[] tmp = cipherUtils.decrypt(randnumAdd, responser.getPrivateKey());
                 result[i] = byteMod(tmp, prime);
             }
         } while (!isLegal(result));
@@ -454,6 +453,9 @@ public class TroopUtilsImpl implements TroopUtils {
         // 求解线性方程组
         Matrix A = new Matrix(coefficient);
         Matrix b = new Matrix(bb);
+        if (A.det() == 0)
+            // 系数矩阵为奇异阵直接返回false
+            return false;
         Matrix x = A.solve(b);
         // 获取构造的多项式的常数项值
         double f0 = x.getArray()[0][0];
