@@ -3,15 +3,18 @@ package com.paratroops.gui;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
 
+import com.paratroops.App;
 import com.paratroops.dto.GameDTO;
 import com.paratroops.entity.Soldier;
 import com.paratroops.entity.Team;
 import com.paratroops.gui.util.Block;
+import com.paratroops.gui.util.Picture;
 import com.paratroops.util.CipherUtils;
 import com.paratroops.util.TroopUtils;
 import com.paratroops.util.impl.CipherUtilsImpl;
@@ -372,6 +375,9 @@ public class GamingPage extends JPanel {
         List<JSoldier> allSoldiers = gameDto.getRedTeamDTO().getJSoldierList();
         allSoldiers.addAll(gameDto.getBlueTeamDTO().getJSoldierList());
         placeSoldiers(allSoldiers);                 // 统一计算红蓝两队士兵的初始位置
+        URL boxURL = App.class.getClassLoader().getResource("box_opened.png");
+        map.getHeadPosition(0).add(new Picture(boxURL, 0, 0, Block.BLOCK_WIDTH, Block.BLOCK_HEIGHT), Integer.valueOf(1));
+        map.getTailPosition(0).add(new Picture(boxURL, 0, 0, Block.BLOCK_WIDTH, Block.BLOCK_HEIGHT), Integer.valueOf(1));
     }
 
     /**
