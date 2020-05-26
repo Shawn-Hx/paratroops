@@ -2,13 +2,16 @@ package com.paratroops.gui;
 
 import javax.swing.*;
 
+import com.paratroops.App;
 import com.paratroops.dto.GameDTO;
 import com.paratroops.entity.Soldier;
 import com.paratroops.entity.Team;
 import com.paratroops.gui.util.Block;
+import com.paratroops.gui.util.Picture;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -285,6 +288,66 @@ public class Map extends JPanel {
         Block secondSelected = selectedBlocks.get(1);
         firstSelected.showEqualRankResult();
         secondSelected.showEqualRankResult();
+    }
+
+    /**
+     * 在最下面一栏显示被排序排到的士兵
+     * @param shownIndex
+     * @param shownSoldier
+     */
+    public void showRedSortedSoldier(int shownIndex, Soldier shownSoldier) {
+        Block shownForRand = getTailPosition(shownIndex+1);
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("RedSoldier_rank_");
+
+        stringBuilder.append(shownSoldier.getRank());
+        stringBuilder.append(".png");
+        URL picWithRankForRank = App.class.getClassLoader().getResource(stringBuilder.toString());
+//        System.out.println(stringBuilder.toString());
+
+        shownForRand.picWithRankForRank(picWithRankForRank);
+
+    }
+
+    /**
+     * 在最上面一栏显示被排序排到的士兵
+     * @param shownIndex
+     * @param shownSoldier
+     */
+    public void showBlueSortedSoldier(int shownIndex, Soldier shownSoldier) {
+        Block shownForRand = getHeadPosition(shownIndex+1);
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("BlueSoldier_rank_");
+
+        stringBuilder.append(shownSoldier.getRank());
+        stringBuilder.append(".png");
+        URL picWithRankForRank = App.class.getClassLoader().getResource(stringBuilder.toString());
+//        System.out.println(stringBuilder.toString());
+
+        shownForRand.picWithRankForRank(picWithRankForRank);
+    }
+
+    /**
+     * 清空排序的结果
+     */
+    public void clearSortResult() {
+        //清空排序那边的结果
+        for (int i=1;i<12;i++){
+            Block redOne = getTailPosition(i);
+            if(redOne.getComponentCount()>1){
+                redOne.remove(0);
+            }
+            Block blueOne = getHeadPosition(i);
+            if(blueOne.getComponentCount()>1){
+                blueOne.remove(0);
+            }
+            redOne.repaint();
+            blueOne.repaint();
+        }
     }
 
 

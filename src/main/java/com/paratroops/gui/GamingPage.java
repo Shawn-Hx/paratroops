@@ -189,6 +189,8 @@ public class GamingPage extends JPanel {
                     for (Block block:redBlocks) {
                         if(block.getSoldier().equals(shownSoldier)) {
                             block.highLightForAWhile();
+                            //并且在下面的对应位置显示这个士兵
+                            map.showRedSortedSoldier(shownIndex,shownSoldier);
                         }
                     }
                     shownIndex += 1;
@@ -241,6 +243,8 @@ public class GamingPage extends JPanel {
                     for (Block block:blueBlocks) {
                         if(block.getSoldier().equals(shownSoldier)) {
                             block.highLightForAWhile();
+                            //并且在上面的对应位置显示这个士兵
+                            map.showBlueSortedSoldier(shownIndex,shownSoldier);
                         }
                     }
                     shownIndex += 1;
@@ -322,6 +326,7 @@ public class GamingPage extends JPanel {
             randTimer.stop();
 //            map.showAuthenticationResult();
             map.showAuthenticationResult();
+            map.clearSortResult();
         }
     }
 
@@ -362,10 +367,12 @@ public class GamingPage extends JPanel {
 
 
         returnButton.addActionListener(e -> {
-            shownIndex = 0;
-            randTimer.stop();
-            map.showAuthenticationResult();
-            map.resetBlockSelection();
+//            shownIndex = 0;
+//            randTimer.stop();
+//            map.clearSortResult();
+//            map.showAuthenticationResult();
+            identificationFinal.doClick();
+//            map.resetBlockSelection();
             window.toTitle();
             if (map.getHeadPosition(0).getComponentCount()>1){
                 map.getHeadPosition(0).remove(0);

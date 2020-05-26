@@ -190,4 +190,13 @@ public class Block extends JLayeredPane {
         this.add(equal_rank_background,Integer.valueOf(3));
         this.repaint();
     }
+
+    /**
+     * 当闪到某个士兵的时候画上去
+     * @param picWithRankForRank
+     */
+    public void picWithRankForRank(URL picWithRankForRank) {
+        Picture SolderWithRankForSort = new Picture(picWithRankForRank,0,0,BLOCK_WIDTH, BLOCK_HEIGHT);
+        this.add(SolderWithRankForSort,Integer.valueOf(2));
+    }
 }
