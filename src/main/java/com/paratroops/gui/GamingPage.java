@@ -319,7 +319,6 @@ public class GamingPage extends JPanel {
         identificationFinal.addActionListener(new IdentificationFinalListener());
         JButton rankCompareEach = new JButton("军衔比较");
         rankCompareEach.addActionListener(new RankCompareEachListener());
-//        JButton rankCompareFromGroups = new JButton("选举军官");
         JButton rankCompareFinalRed = new JButton("红方选举");
         rankCompareFinalRed.addActionListener(new RankCompareFinalRedListener());
         JButton rankCompareFinalBlue = new JButton("蓝方选举");
@@ -328,6 +327,11 @@ public class GamingPage extends JPanel {
         selectMultiSoldiers.addActionListener(new SelectMultiSoldiers());
         JButton openBox = new JButton("打开补给");
         openBox.addActionListener(new OpenBoxListener());
+        // 下方控制台
+        JTextArea console = new JTextArea("这是控制台，算法输出在这里");
+        console.setRows(6);
+        JScrollPane scroll = new JScrollPane(console);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); 
 
         procedurePanel.setLayout(new GridLayout(7,1));
         procedurePanel.add(identificationEach);
@@ -350,12 +354,13 @@ public class GamingPage extends JPanel {
         this.setLayout(new BorderLayout());
         this.add(returnButton, BorderLayout.NORTH);
         this.add(procedurePanel,BorderLayout.EAST);
+        this.add(scroll, BorderLayout.SOUTH);
         
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(null);
+        JPanel mapPanel = new JPanel();
+        mapPanel.setLayout(null);
         map = new Map(gameDto);
-        buttonPanel.add(map);
-        this.add(buttonPanel);
+        mapPanel.add(map);
+        this.add(mapPanel);
     }
 
     /**

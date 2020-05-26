@@ -21,6 +21,11 @@ public class Map extends JPanel {
      */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 地图相对于容器在X轴和Y轴方向的偏移
+     */
+    private static final int X_OFFSET = 2, Y_OFFSET = 0;
+
     private static boolean one_block_selected = false;
 
     private static boolean two_block_selected = false;
@@ -49,12 +54,12 @@ public class Map extends JPanel {
         this.gameDto = gameDto;
         int[] mapSize = gameDto.getSIZE();
         this.setLayout(null);
-        this.setBounds(10, 10, mapSize[1] * Block.BLOCK_WIDTH + 20, mapSize[0] * Block.BLOCK_HEIGHT + 20);
+        this.setBounds(X_OFFSET, Y_OFFSET, mapSize[1] * Block.BLOCK_WIDTH + 20, mapSize[0] * Block.BLOCK_HEIGHT + 20);
 
         blocks = new Block[mapSize[0]][mapSize[1]];
         for (int i=0; i<mapSize[0]; ++i) {
             for (int j=0; j<mapSize[1]; ++j) {
-                Block temp = new Block(10 + j * 100, 10 + i * 100);
+                Block temp = new Block(X_OFFSET + j * 100, Y_OFFSET + i * 100);
                 temp.addMouseListener(new BlockMouseListener());
                 blocks[i][j] = temp;
                 this.add(blocks[i][j]);
