@@ -424,6 +424,7 @@ public class GamingPage extends JPanel {
         map.getTailPosition(0).add(new Picture(boxURL, 0, 0, Block.BLOCK_WIDTH, Block.BLOCK_HEIGHT), Integer.valueOf(2));
     }
 
+
     /**
      * 随机初始化士兵位置并将士兵绘制在该位置上
      */
