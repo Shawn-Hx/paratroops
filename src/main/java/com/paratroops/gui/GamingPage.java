@@ -363,7 +363,7 @@ public class GamingPage extends JPanel {
         mapPanel.setLayout(null);
         map = new Map(gameDto);
         mapPanel.add(map);
-        this.add(mapPanel);
+        this.add(mapPanel, BorderLayout.CENTER);
     }
 
     /**
@@ -376,8 +376,8 @@ public class GamingPage extends JPanel {
         allSoldiers.addAll(gameDto.getBlueTeamDTO().getJSoldierList());
         placeSoldiers(allSoldiers);                 // 统一计算红蓝两队士兵的初始位置
         URL boxURL = App.class.getClassLoader().getResource("box_opened.png");
-        map.getHeadPosition(0).add(new Picture(boxURL, 0, 0, Block.BLOCK_WIDTH, Block.BLOCK_HEIGHT), Integer.valueOf(1));
-        map.getTailPosition(0).add(new Picture(boxURL, 0, 0, Block.BLOCK_WIDTH, Block.BLOCK_HEIGHT), Integer.valueOf(1));
+        map.getHeadPosition(0).add(new Picture(boxURL, 0, 0, Block.BLOCK_WIDTH, Block.BLOCK_HEIGHT), Integer.valueOf(2));
+        map.getTailPosition(0).add(new Picture(boxURL, 0, 0, Block.BLOCK_WIDTH, Block.BLOCK_HEIGHT), Integer.valueOf(2));
     }
 
     /**
@@ -396,7 +396,6 @@ public class GamingPage extends JPanel {
             soldier.setPosY(y);
             Block block = map.getPosition(x, y);
             block.add(soldier.getDefaultPic(),Integer.valueOf(2));
-//            block.add(soldier.getPicture(),Integer.valueOf(2));
             block.repaint();
             block.setSoldier(soldier);
         }

@@ -21,7 +21,7 @@ public class WindowPage extends JFrame {
     /**
      * 页面尺寸
      */
-    public static final int[] SIZE = {1280, 720};
+    public static final int[] SIZE = {1280, 740};
 
     private TitlePage titlePage;
     private GamingPage gamingPage;

@@ -26,12 +26,6 @@ public class Map extends JPanel {
      */
     private static final int PX_OFFSET = 2, PY_OFFSET = 0;
 
-    /**
-     * 地图右下角相对于容器在X轴和Y轴方向的偏移
-     */
-    private static final int NX_OFFSET = 20, NY_OFFSET = 20;
-
-
     private static boolean one_block_selected = false;
 
     private static boolean two_block_selected = false;
@@ -65,7 +59,7 @@ public class Map extends JPanel {
         this.gameDto = gameDto;
         int[] mapSize = gameDto.getSIZE();
         this.setLayout(null);
-        this.setBounds(PX_OFFSET, PY_OFFSET, mapSize[1] * Block.BLOCK_WIDTH + NX_OFFSET, (mapSize[0] + 2) * Block.BLOCK_HEIGHT + NY_OFFSET);
+        this.setBounds(PX_OFFSET, PY_OFFSET, mapSize[1] * Block.BLOCK_WIDTH, (mapSize[0] + 2) * Block.BLOCK_HEIGHT);
 
         headLine = new Block[mapSize[1]];
         tailLine = new Block[mapSize[1]];
