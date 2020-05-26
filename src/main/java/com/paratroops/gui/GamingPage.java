@@ -289,6 +289,15 @@ public class GamingPage extends JPanel {
             if (canOpenBox){
                 //成功开箱就提示能够开箱
                 JOptionPane.showMessageDialog(null, "开箱成功");
+                //判断一下队伍的颜色，蓝色开head，红色开tai
+                URL boxOpenedURL = App.class.getClassLoader().getResource("box_opened.png");
+                if (selectedBlocksToOpenBox.get(0).getSoldier().team == Team.RED) {
+                    map.getTailPosition(0).remove(0);
+                    map.getTailPosition(0).add(new Picture(boxOpenedURL, 0, 0, Block.BLOCK_WIDTH, Block.BLOCK_HEIGHT), Integer.valueOf(2));
+                }else{
+                    map.getHeadPosition(0).remove(0);
+                    map.getHeadPosition(0).add(new Picture(boxOpenedURL, 0, 0, Block.BLOCK_WIDTH, Block.BLOCK_HEIGHT), Integer.valueOf(2));
+                }
                 //成功后重置
                 map.resetSelectBlocksToOpenBox();
             }else{
@@ -351,6 +360,12 @@ public class GamingPage extends JPanel {
             map.showAuthenticationResult();
             map.resetBlockSelection();
             window.toTitle();
+            if (map.getHeadPosition(0).getComponentCount()>1){
+                map.getHeadPosition(0).remove(0);
+            }
+            if( map.getTailPosition(0).getComponentCount()>1){
+                map.getTailPosition(0).remove(0);
+            }
         });
 
         this.setBounds(0, 0, WindowPage.SIZE[0], WindowPage.SIZE[1]);
@@ -375,7 +390,7 @@ public class GamingPage extends JPanel {
         List<JSoldier> allSoldiers = gameDto.getRedTeamDTO().getJSoldierList();
         allSoldiers.addAll(gameDto.getBlueTeamDTO().getJSoldierList());
         placeSoldiers(allSoldiers);                 // 统一计算红蓝两队士兵的初始位置
-        URL boxURL = App.class.getClassLoader().getResource("box_opened.png");
+        URL boxURL = App.class.getClassLoader().getResource("box_closed.png");
         map.getHeadPosition(0).add(new Picture(boxURL, 0, 0, Block.BLOCK_WIDTH, Block.BLOCK_HEIGHT), Integer.valueOf(2));
         map.getTailPosition(0).add(new Picture(boxURL, 0, 0, Block.BLOCK_WIDTH, Block.BLOCK_HEIGHT), Integer.valueOf(2));
     }
