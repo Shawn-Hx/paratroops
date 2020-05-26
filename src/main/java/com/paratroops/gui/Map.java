@@ -21,6 +21,17 @@ public class Map extends JPanel {
      */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 地图左上角相对于容器在X轴和Y轴方向的偏移
+     */
+    private static final int PX_OFFSET = 2, PY_OFFSET = 0;
+
+    /**
+     * 地图右下角相对于容器在X轴和Y轴方向的偏移
+     */
+    private static final int NX_OFFSET = 20, NY_OFFSET = 20;
+
+
     private static boolean one_block_selected = false;
 
     private static boolean two_block_selected = false;
@@ -41,6 +52,11 @@ public class Map extends JPanel {
     private List<Block> blocksToOpenBox = new ArrayList<Block>();
 
     /**
+     * 首/尾行单元格阵列，第一个单元格放箱子，从第二个开始按军衔高低放士兵
+     */
+    private Block[] headLine, tailLine;
+
+    /**
      * 地图单元格阵列
      */
     private Block[][] blocks;
@@ -49,12 +65,20 @@ public class Map extends JPanel {
         this.gameDto = gameDto;
         int[] mapSize = gameDto.getSIZE();
         this.setLayout(null);
-        this.setBounds(10, 10, mapSize[1] * Block.BLOCK_WIDTH + 20, mapSize[0] * Block.BLOCK_HEIGHT + 20);
+        this.setBounds(PX_OFFSET, PY_OFFSET, mapSize[1] * Block.BLOCK_WIDTH + NX_OFFSET, (mapSize[0] + 2) * Block.BLOCK_HEIGHT + NY_OFFSET);
 
+        headLine = new Block[mapSize[1]];
+        tailLine = new Block[mapSize[1]];
         blocks = new Block[mapSize[0]][mapSize[1]];
+        for (int j=0; j<mapSize[1]; ++j) {
+            headLine[j] = new Block(PX_OFFSET + j * Block.BLOCK_WIDTH, PY_OFFSET);
+            this.add(headLine[j]);
+            tailLine[j] = new Block(PX_OFFSET + j * Block.BLOCK_WIDTH, PY_OFFSET + (mapSize[0] + 1) * Block.BLOCK_WIDTH);
+            this.add(tailLine[j]);
+        }
         for (int i=0; i<mapSize[0]; ++i) {
             for (int j=0; j<mapSize[1]; ++j) {
-                Block temp = new Block(10 + j * 100, 10 + i * 100);
+                Block temp = new Block(PX_OFFSET + j * Block.BLOCK_WIDTH, PY_OFFSET + (i + 1) * Block.BLOCK_WIDTH);
                 temp.addMouseListener(new BlockMouseListener());
                 blocks[i][j] = temp;
                 this.add(blocks[i][j]);
@@ -77,13 +101,27 @@ public class Map extends JPanel {
     }
 
     /**
-     * 获取某位置的单元格
+     * 获取地图中某位置的单元格
      * @param x 行坐标
      * @param y 列坐标
      * @return
      */
     public Block getPosition(int x, int y) {
         return blocks[x][y];
+    }
+
+    /**
+     * 获取首行某位置的单元格
+     */
+    public Block getHeadPosition(int y) {
+        return headLine[y];
+    }
+
+    /**
+     * 获取尾行某位置的单元格
+     */
+    public Block getTailPosition(int y) {
+        return tailLine[y];
     }
 
     public void clearMap() {

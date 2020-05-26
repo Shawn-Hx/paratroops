@@ -9,16 +9,16 @@ import com.paratroops.util.impl.CipherUtilsImpl;
  */
 public class GameDTO {
     /**
-     * 地图尺寸
+     * 地图尺寸(不包括上下方用于开箱的两行)
      * SIZE[0]: 行数
      * SIZE[1]: 列数
      */
-    private int[] SIZE = {6, 12};
+    private int[] SIZE = {4, 12};
 
     /**
      * 队伍人数上下限
      */
-    public static final int MIN_NUM = 2, MAX_NUM = 19;
+    public static final int MIN_NUM = 2, MAX_NUM = 11;
 
     /**
      * 默认初始化的红/蓝方队伍人数
