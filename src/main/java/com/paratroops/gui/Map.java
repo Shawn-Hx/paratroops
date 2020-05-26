@@ -277,6 +277,16 @@ public class Map extends JPanel {
         return (block0.getSoldier().team == block1.getSoldier().team);
     }
 
+    /**
+     * 如果两个士兵军衔一样高，就在士兵的大头上显示等
+     */
+    public void setEqualRank() {
+        Block firstSelected = selectedBlocks.get(0);
+        Block secondSelected = selectedBlocks.get(1);
+        firstSelected.showEqualRankResult();
+        secondSelected.showEqualRankResult();
+    }
+
 
     /**
      * Block Listener，用于选中两个士兵(背景变红)

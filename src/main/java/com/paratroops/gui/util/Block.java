@@ -39,6 +39,10 @@ public class Block extends JLayeredPane {
 
     private static final URL SHOW_COMMANDER_RED = App.class.getClassLoader().getResource("RedSoldier_leader.jpg");
 
+    private static final URL SHOW_EQUAL_RANK_RESULT_BLUE = App.class.getClassLoader().getResource("BlueSoldier_equal.jpg");
+
+    private static final URL SHOW_EQUAL_RANK_RESULT_RED = App.class.getClassLoader().getResource("RedSoldier_equal.jpg");
+
     /**
      * @param x distance left to the left bounder of the whole map
      * @param y distance up to the upper bounder of the whole map
@@ -171,5 +175,19 @@ public class Block extends JLayeredPane {
 
         timer.start();
         timer.setRepeats(false);
+    }
+
+    /**
+     * 如果两个士兵军衔相等就显示相等
+     */
+    public void showEqualRankResult() {
+        Picture equal_rank_background;
+        if(this.getSoldier().team == Team.RED){
+            equal_rank_background = new Picture(SHOW_EQUAL_RANK_RESULT_RED,0,0,BLOCK_WIDTH, BLOCK_HEIGHT);
+        }else{
+            equal_rank_background = new Picture(SHOW_EQUAL_RANK_RESULT_BLUE,0,0,BLOCK_WIDTH, BLOCK_HEIGHT);
+        }
+        this.add(equal_rank_background,Integer.valueOf(3));
+        this.repaint();
     }
 }

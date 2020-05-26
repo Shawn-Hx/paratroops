@@ -68,7 +68,8 @@ public class GamingPage extends JPanel {
             if(map.ifTwoSoldiersSelected()){
                 //若是，则进行两两军衔比较
                 List<Soldier> soldiers = map.getSelectedTwoSoilders();
-                boolean result = false;
+                boolean result01 = false;
+                boolean result02 = false;
                 //check两个士兵是不是同一个阵营
                 Soldier soldier0 = soldiers.get(0);
                 Soldier soldier1 = soldiers.get(1);
@@ -80,13 +81,18 @@ public class GamingPage extends JPanel {
                     return;
                 }
 
-                result = troopUtils.compareRank(soldier0,soldier1);
-                if (result){
+                result01 = troopUtils.compareRank(soldier0,soldier1);
+                result02 = troopUtils.compareRank(soldier1,soldier0);
+
+                if (result01&&!result02){
                     //如果是第一个选中的士兵军衔高
                     map.firstSolderHasHigherRank();
-                }else{
+                }else if(!result01&&result02){
                     //如果是第二个选中的士兵军衔高
                     map.secondSolderHasHigherRand();
+                }else{
+                    //一样高
+                    map.setEqualRank();
                 }
                 //1000 ms 后恢复原状
                 Timer timer = new Timer(1000, new ActionListener() {
