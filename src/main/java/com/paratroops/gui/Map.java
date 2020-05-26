@@ -294,16 +294,35 @@ public class Map extends JPanel {
                 }else{
                     //check 是不是已经有格子被选中了
                     if (one_block_selected){
-                        //那么这个格子也被选中
-                        if(two_block_selected){
-                            //什么都不做，直到有什么过程结束
+
+                        //进一步判断是否是一样的Soldier,如果一样就取消选择
+                        if (selectedBlocks.get(0).equals(blockClicked)){
+                            //取消选择
+                            blockClicked.resetSelected();
+                            one_block_selected = false;
+                            first_solder_selected = null;
+                            selectedBlocks.remove(0);
                         }else{
-                            two_block_selected = true;
-                            selectedBlocks.add(blockClicked);
-                            //格子变色
-                            blockClicked.setSelected();
-                            second_solder_selected = blockClicked.getSoldier();
+                            //那么这个格子也被选中
+                            if(two_block_selected){
+                                //什么都不做，直到有什么过程结束
+                                if(selectedBlocks.get(1).equals(blockClicked)){
+                                    //同理取消选择
+                                    blockClicked.resetSelected();
+                                    two_block_selected = false;
+                                    second_solder_selected = null;
+                                    selectedBlocks.remove(1);
+                                }
+                            }else{
+                                two_block_selected = true;
+                                selectedBlocks.add(blockClicked);
+                                //格子变色
+                                blockClicked.setSelected();
+                                second_solder_selected = blockClicked.getSoldier();
+                            }
                         }
+
+
                     }else{
                         //如果这是第一个
                         one_block_selected = true;
