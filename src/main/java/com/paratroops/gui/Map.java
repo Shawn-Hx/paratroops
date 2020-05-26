@@ -342,11 +342,22 @@ public class Map extends JPanel {
                         blockClicked.setSelected();
                         blocksToOpenBox.add(blockClicked);
                     }else{
-                        if(blockClicked.getSoldier().team != blocksToOpenBox.get(0).getSoldier().team){
-                            JOptionPane.showMessageDialog(null, "不能选择不同队伍的人来开箱", "标题",JOptionPane.ERROR_MESSAGE);
+                        boolean isSelected = false;
+                        for (Block block:blocksToOpenBox){
+                            if (blockClicked.equals(block)) {
+                                isSelected = true;
+                            }
+                        }
+                        //每次判断是不是已经选过
+                        if (isSelected){
+                            JOptionPane.showMessageDialog(null, "不要多次选择同一个人", "标题",JOptionPane.ERROR_MESSAGE);
                         }else{
-                            blockClicked.setSelected();
-                            blocksToOpenBox.add(blockClicked);
+                            if(blockClicked.getSoldier().team != blocksToOpenBox.get(0).getSoldier().team){
+                                JOptionPane.showMessageDialog(null, "不能选择不同队伍的人来开箱", "标题",JOptionPane.ERROR_MESSAGE);
+                            }else{
+                                blockClicked.setSelected();
+                                blocksToOpenBox.add(blockClicked);
+                            }
                         }
                     }
 
