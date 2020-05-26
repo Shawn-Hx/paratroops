@@ -354,6 +354,7 @@ public class GamingPage extends JPanel {
         procedurePanel.add(selectMultiSoldiers);
         procedurePanel.add(openBox);
 
+
         returnButton.addActionListener(e -> {
             shownIndex = 0;
             randTimer.stop();
