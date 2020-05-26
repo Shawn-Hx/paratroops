@@ -1,10 +1,7 @@
 package com.paratroops.gui.util;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.net.URL;
 import javax.swing.*;
 
@@ -42,16 +39,11 @@ public class Block extends JLayeredPane {
 
     private static final URL SHOW_COMMANDER_RED = App.class.getClassLoader().getResource("RedSoldier_leader.jpg");
 
-    private int x;
-
-    private int y;
     /**
      * @param x distance left to the left bounder of the whole map
      * @param y distance up to the upper bounder of the whole map
      */
     public Block(int x, int y) {
-        this.x = x;
-        this.y = y;
         this.setBounds(x, y, BLOCK_WIDTH, BLOCK_HEIGHT);
         Picture pic = new Picture(BLOCK_URL, 0, 0, BLOCK_WIDTH, BLOCK_HEIGHT);
         this.add(pic, Integer.valueOf(0));           // 把草地图片放在最底层
