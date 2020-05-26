@@ -53,4 +53,11 @@ public interface TroopUtils {
      * @return 是否开箱成功
      */
     public boolean openBox(List<? extends Soldier> soldiers, int boxKey);
+
+    /**
+     * 返回控制台输出
+     * @return
+     */
+    public String getLog();
+
 }

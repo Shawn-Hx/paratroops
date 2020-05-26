@@ -61,6 +61,8 @@ public class GamingPage extends JPanel {
 
     private TroopUtils troopUtils = TroopUtilsImpl.getInstance();
 
+    JTextArea console = new JTextArea("这是控制台，算法输出在这里");
+
     private class RankCompareEachListener implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -83,6 +85,9 @@ public class GamingPage extends JPanel {
 
                 result01 = troopUtils.compareRank(soldier0,soldier1);
                 result02 = troopUtils.compareRank(soldier1,soldier0);
+
+                //控制台输出
+                console.setText(troopUtils.getLog());
 
                 if (result01&&!result02){
                     //如果是第一个选中的士兵军衔高
@@ -126,6 +131,8 @@ public class GamingPage extends JPanel {
                 List<Soldier> soldiers = map.getSelectedTwoSoilders();
                 boolean result = false;
                 result = troopUtils.authenticate(soldiers.get(0),soldiers.get(1));
+                //控制台输出
+                console.setText(troopUtils.getLog());
                 if (result){
                     //如果是同一阵营，则显示为同一阵营
                     String sameTeamMessage = "同阵营";
@@ -167,6 +174,9 @@ public class GamingPage extends JPanel {
 
             Soldier commanderRed = troopUtils.selectLeader(redSoldiers);
             // 首先把指挥官的照片变成对应的加了红旗的
+
+            //控制台输出
+            console.setText(troopUtils.getLog());
 
             for (Block block:redBlocks) {
                 if(block.getSoldier().equals(commanderRed)) {
@@ -221,6 +231,9 @@ public class GamingPage extends JPanel {
 
             Soldier commanderBlue = troopUtils.selectLeader(blueSoldiers);
             // 首先把指挥官的照片变成对应的加了红旗的
+
+            //控制台输出
+            console.setText(troopUtils.getLog());
 
             for (Block block:blueBlocks) {
                 if(block.getSoldier().equals(commanderBlue)) {
@@ -296,6 +309,9 @@ public class GamingPage extends JPanel {
                 relatedBoxKey = gameDto.getBlueTeamDTO().getBoxKey();
             }
             boolean canOpenBox = troopUtils.openBox(selectedSoldiersToOpenBox,relatedBoxKey);
+            //控制台输出
+            console.setText(troopUtils.getLog());
+
             if (canOpenBox){
                 //成功开箱就提示能够开箱
                 JOptionPane.showMessageDialog(null, "开箱成功");
@@ -351,11 +367,10 @@ public class GamingPage extends JPanel {
         JButton openBox = new JButton("打开补给");
         openBox.addActionListener(new OpenBoxListener());
         // 下方控制台
-        JTextArea console = new JTextArea("这是控制台，算法输出在这里");
+
         console.setRows(6);
         JScrollPane scroll = new JScrollPane(console);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); 
-
         procedurePanel.setLayout(new GridLayout(7,1));
         procedurePanel.add(identificationEach);
         procedurePanel.add(identificationFinal);
