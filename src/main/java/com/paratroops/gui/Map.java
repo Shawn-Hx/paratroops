@@ -7,7 +7,7 @@ import com.paratroops.dto.GameDTO;
 import com.paratroops.entity.Soldier;
 import com.paratroops.entity.Team;
 import com.paratroops.gui.util.Block;
-import com.paratroops.gui.util.Picture;
+import com.paratroops.gui.util.BorderedBlock;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -68,9 +68,9 @@ public class Map extends JPanel {
         tailLine = new Block[mapSize[1]];
         blocks = new Block[mapSize[0]][mapSize[1]];
         for (int j=0; j<mapSize[1]; ++j) {
-            headLine[j] = new Block(PX_OFFSET + j * Block.BLOCK_WIDTH, PY_OFFSET);
+            headLine[j] = new BorderedBlock(PX_OFFSET + j * Block.BLOCK_WIDTH, PY_OFFSET, BorderedBlock.Color.BLUE);        // 首行排列蓝色士兵
             this.add(headLine[j]);
-            tailLine[j] = new Block(PX_OFFSET + j * Block.BLOCK_WIDTH, PY_OFFSET + (mapSize[0] + 1) * Block.BLOCK_WIDTH);
+            tailLine[j] = new BorderedBlock(PX_OFFSET + j * Block.BLOCK_WIDTH, PY_OFFSET + (mapSize[0] + 1) * Block.BLOCK_WIDTH, BorderedBlock.Color.RED);      // 尾行排列红色士兵
             this.add(tailLine[j]);
         }
         for (int i=0; i<mapSize[0]; ++i) {
@@ -338,12 +338,12 @@ public class Map extends JPanel {
         //清空排序那边的结果
         for (int i=1;i<12;i++){
             Block redOne = getTailPosition(i);
-            if(redOne.getComponentCount()>1){
-                redOne.remove(0);
+            if(redOne.getComponentCount()>2){
+                redOne.remove(2);       // 删除草地上的士兵
             }
             Block blueOne = getHeadPosition(i);
-            if(blueOne.getComponentCount()>1){
-                blueOne.remove(0);
+            if(blueOne.getComponentCount()>2){
+                blueOne.remove(2);       // 删除草地上的士兵
             }
             redOne.repaint();
             blueOne.repaint();
