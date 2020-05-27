@@ -17,6 +17,17 @@ public class TroopUtilsTest extends TestCase {
     public TroopUtils troopUtils = TroopUtilsImpl.getInstance();
 
 
+    public void testDispatchPublicKeys() {
+        List<Soldier> soldiers = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            soldiers.add(new Soldier(i, cipherUtils));
+        }
+        troopUtils.dispatchPublicKeys(soldiers);
+        System.out.println(troopUtils.getLog());
+        troopUtils.clearLog();
+    }
+
+
     public void testCompareRank() {
         CipherUtils cipherUtils = CipherUtilsImpl.getInstance();
         Soldier req = new Soldier(4, cipherUtils);
@@ -126,6 +137,8 @@ public class TroopUtilsTest extends TestCase {
         int secretBoxKey = 23;
         int threshold = 3;
         troopUtils.dispatchBoxKeyPairs(soldiers, threshold, secretBoxKey);
+        System.out.println(troopUtils.getLog());
+        troopUtils.clearLog();
 
         List<Soldier> openBoxSoldiers = new ArrayList<>();
 
@@ -148,6 +161,8 @@ public class TroopUtilsTest extends TestCase {
         openBoxSoldiers.add(soldiers.get(0));
         openBoxSoldiers.add(soldiers.get(1));
         assertFalse(troopUtils.openBox(openBoxSoldiers, secretBoxKey));
+        System.out.println(troopUtils.getLog());
+        troopUtils.clearLog();
     }
 
 }

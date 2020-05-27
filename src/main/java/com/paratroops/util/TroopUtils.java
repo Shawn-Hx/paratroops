@@ -60,4 +60,9 @@ public interface TroopUtils {
      */
     public String getLog();
 
+    /**
+     * 清空日志字符串
+     */
+    public void clearLog();
+
 }

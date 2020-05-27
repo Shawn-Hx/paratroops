@@ -30,7 +30,8 @@ public class CipherUtilsImpl implements CipherUtils {
      * 大素数bit位数
      */
     private static final int PRIME_BIT_LENGTH = 128;
-    private static final long E = 65535;
+    private static final int E_BIT_LENGTH = 16;
+//    private static final long E = 65535;
 
     /**
      * 加密字符串数字基数
@@ -45,13 +46,14 @@ public class CipherUtilsImpl implements CipherUtils {
     public CipherKey[] genKeyPair() {
         Random random = new Random();
 
-        BigInteger e = BigInteger.valueOf(E); // e is be fixed 65535 temporarily
-        BigInteger p, q, n, phi;
+//        BigInteger e = BigInteger.valueOf(E); // e is be fixed 65535 temporarily
+        BigInteger e, p, q, n, phi;
         do {
             p = BigInteger.probablePrime(PRIME_BIT_LENGTH, random);
             q = BigInteger.probablePrime(PRIME_BIT_LENGTH, random);
             n = p.multiply(q);
             phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
+            e = BigInteger.probablePrime(E_BIT_LENGTH, random);
         } while (!e.gcd(phi).equals(BigInteger.ONE));
 
         BigInteger d = e.modInverse(phi);
