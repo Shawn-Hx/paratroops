@@ -114,17 +114,25 @@ public class TroopUtilsImpl implements TroopUtils {
         int[] result = new int[10];
         int compare;
         int prime;
+        String s;
         //若余数数组不符合要求，则重做
         do {
+            s = "Requester's rank is " + requester.getRank() + ", ";
+            s += "Responser's rank is " + responser.getRank() + "." + SPLITTER;
+
             //生成随机数
             Random rand = new Random();
             int randnum = rand.nextInt(1000) + 2500;
             byte[] message = intToByteArray(randnum);
+            s += "Requester select a random number " + randnum + ", ";
 
             //发起方用回复方的公钥对随机数加密后，减去发起方的军衔
             byte[] randnumInt = cipherUtils.encrypt(message, responser.getPublicKey());
             byte[] randnumsub = byteSubtract(randnumInt, requester.getRank());
             byte[] randnumAdd;
+            s += "then encrypt it with Responser's public key " + responser.getPublicKey().keyToString() +
+                    " and subtract his own rank. ";
+            s += "Finally he sends the result to Responser." + SPLITTER;
 
             //回复方生成大素数prime
             prime = BigInteger.probablePrime(10, new Random()).intValue();
@@ -139,19 +147,31 @@ public class TroopUtilsImpl implements TroopUtils {
                 byte[] tmp = cipherUtils.decrypt(randnumAdd, responser.getPrivateKey());
                 result[i] = byteMod(tmp, prime);
             }
+            s += "Responser add the result from 0 to 9 individually and decrypt with own private key " +
+                    responser.getPrivateKey().keyToString() + " mod a random prime " + prime + "." + SPLITTER;
+
         } while (!isLegal(result));
 
         //回复方将余数数组中大于等于自己军衔索引的元素加1，再发给发起方
         for (int j = responser.getRank(); j < 10; j++) {
             result[j]++;
         }
+        s += "For each element whose index is not smaller than Responser's rank, add 1. Responser sends the results back to Requestor." + SPLITTER;
+
 
         //若发起方的军衔索引元素与randnum%prime相等，是则发起方军衔不大于回复方，否则大于
-        if (result[requester.getRank()] == compare)
+        if (result[requester.getRank()] == compare) {
+            s += "Element " + requester.getRank() + " equals to rand number mod prime. ";
+            s += "Requester's rank is not larger than Responsor's.";
+            logger.append(s);
             return false;
-        else
+        }
+        else {
+            s += "Element " + requester.getRank() + " doesn't equal to rand number mod prime. ";
+            s += "Requester's rank is larger than Responsor's.";
+            logger.append(s);
             return true;
-
+        }
     }
 
     /**
@@ -305,9 +325,9 @@ public class TroopUtilsImpl implements TroopUtils {
         int candidate_num = candidate.size();
         int voter_num = voter.size();
         // 每个候选人的最多得票数
-        int k = (int) (Math.floor(Math.log(voter_num)/Math.log(2)) + 1);
+        int k = (int) (Math.floor(Math.log(voter_num) / Math.log(2)) + 1);
         // 选举总位数
-        int bits = candidate_num*k;
+        int bits = candidate_num * k;
 
         // 由于当前记录编码使用 int 型，因此不支持数量特别多的 candidate 或 voter
         int[] arr_vote = new int[voter_num];
@@ -315,12 +335,12 @@ public class TroopUtilsImpl implements TroopUtils {
         char[] str_bits = new char[bits];
         int i = 0;
         String str;
-        for (i = 0;i < voter_num;i++){
+        for (i = 0; i < voter_num; i++) {
             Arrays.fill(str_bits, '0');
-            for(int j = 0;j < candidate_num;j++){
-                if (vote_map.get(i).contains(candidate.get(j))){
+            for (int j = 0; j < candidate_num; j++) {
+                if (vote_map.get(i).contains(candidate.get(j))) {
                     // 为对应的候选者投一票
-                    str_bits[k*(j+1)-1] = '1';
+                    str_bits[k * (j + 1) - 1] = '1';
                 }
             }
             str = new String(str_bits);
@@ -330,16 +350,16 @@ public class TroopUtilsImpl implements TroopUtils {
     }
 
     // difussion过程，混淆每个 voter 的投票情况
-    private int[][] casting(int []arr_vote) {
+    private int[][] casting(int[] arr_vote) {
         int voter_num = arr_vote.length;
         int[][] transfer_matrix = new int[voter_num][voter_num];
         Random random = new Random();
 
-        for(int i = 0;i < voter_num;i++) {
+        for (int i = 0; i < voter_num; i++) {
             int tmp = arr_vote[i];
             // 将第 i 个人的投票情况分散开
-            for(int j = 0;j < voter_num - 1;j++) {
-                transfer_matrix[i][j] = random.nextInt(tmp+1);
+            for (int j = 0; j < voter_num - 1; j++) {
+                transfer_matrix[i][j] = random.nextInt(tmp + 1);
                 tmp = tmp - transfer_matrix[i][j];
             }
             transfer_matrix[i][voter_num - 1] = tmp;
@@ -369,34 +389,36 @@ public class TroopUtilsImpl implements TroopUtils {
         return broadcast;
     }
 
-    private int verify(int[][] broadcast, int index, int candidate_num, int voter_num){
+    private int verify(int[][] broadcast, int index, int candidate_num, int voter_num) {
         int result = 0;
         int[] arr_votes = new int[candidate_num];
-        for(int i = 0;i < voter_num;i++){
+        for (int i = 0; i < voter_num; i++) {
             // 统计收到的全部信息
             result += broadcast[i][index];
         }
 
-        int k = (int) (Math.floor(Math.log(voter_num)/Math.log(2)) + 1); //每个候选人对应的二进制位数
+        int k = (int) (Math.floor(Math.log(voter_num) / Math.log(2)) + 1); //每个候选人对应的二进制位数
         String str = Integer.toBinaryString(result);
 
         // 解析每个候选者的得票情况
         int length = str.length();
-        for(int i = (candidate_num - 1);i >= 0;i--){
-            if(length >= k){
+        for (int i = (candidate_num - 1); i >= 0; i--) {
+            if (length >= k) {
                 String tmp = str.substring(length - k, length);
-                arr_votes[i] = Integer.parseInt(tmp,2);
-            }else if(length > 0){
+                arr_votes[i] = Integer.parseInt(tmp, 2);
+            }
+            else if (length > 0) {
                 String tmp = str.substring(0, length);
-                arr_votes[i] = Integer.parseInt(tmp,2);
-            }else{
+                arr_votes[i] = Integer.parseInt(tmp, 2);
+            }
+            else {
                 arr_votes[i] = 0;
             }
             length -= k;
         }
 
         int max_index = 0;
-        for(int i = 0;i < candidate_num;i++) {
+        for (int i = 0; i < candidate_num; i++) {
             if (arr_votes[i] > arr_votes[max_index]) {
                 max_index = i;
             }
@@ -409,7 +431,7 @@ public class TroopUtilsImpl implements TroopUtils {
     private int electronicVoting(List<Soldier> candidate, List<Soldier> voter) {
         Random rand = new Random();
         List<List<Soldier>> vote_map = new ArrayList<>();
-        for (int i = 0;i < voter.size();i++){
+        for (int i = 0; i < voter.size(); i++) {
             List<Soldier> list = new ArrayList<>();
             for (Soldier soldier : candidate) {
                 // 假设每位候选人有 1/3 的几率被选中
@@ -432,17 +454,18 @@ public class TroopUtilsImpl implements TroopUtils {
     @Override
     public Soldier selectLeader(List<Soldier> soldiers) {
         sortByRank(soldiers);
-        if (soldiers.size() < 2 || !compareRank(soldiers.get(1), soldiers.get(0))){
+        if (soldiers.size() < 2 || !compareRank(soldiers.get(1), soldiers.get(0))) {
             return soldiers.get(0);
         }
         // 获取 rank 最高的所有士兵
         List<Soldier> candidate = new ArrayList<>();
         List<Soldier> voter = new ArrayList<>();
         candidate.add(soldiers.get(0));
-        for (int i = 1;i < soldiers.size();i++) {
+        for (int i = 1; i < soldiers.size(); i++) {
             if (compareRank(soldiers.get(i), soldiers.get(0))) {
                 candidate.add(soldiers.get(i));
-            } else {
+            }
+            else {
                 voter.add(soldiers.get(i));
             }
         }
@@ -450,7 +473,7 @@ public class TroopUtilsImpl implements TroopUtils {
         System.out.println("有" + candidate.size() + "个士兵具有最高军衔");
         System.out.println("有" + voter.size() + "个士兵进行投票");
         // 没有投票的士兵，进行随机选取
-        if (voter.size() == 0){
+        if (voter.size() == 0) {
             Random random = new Random();
             return candidate.get(random.nextInt(candidate.size()));
         }
