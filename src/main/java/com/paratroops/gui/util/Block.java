@@ -131,7 +131,7 @@ public class Block extends JLayeredPane {
         }else{
             lower_rank_background = new Picture(SHOW_LOWER_RANK_RESULT_BLUE,0,0,BLOCK_WIDTH, BLOCK_HEIGHT);
         }
-        this.add(lower_rank_background,Integer.valueOf(3));
+        this.add(lower_rank_background, Integer.valueOf(3));
         this.repaint();
     }
 
@@ -197,6 +197,7 @@ public class Block extends JLayeredPane {
      */
     public void picWithRankForRank(URL picWithRankForRank) {
         Picture SolderWithRankForSort = new Picture(picWithRankForRank,0,0,BLOCK_WIDTH, BLOCK_HEIGHT);
-        this.add(SolderWithRankForSort,Integer.valueOf(2));
+        this.add(SolderWithRankForSort, Integer.valueOf(2));
+        setSoldier(soldier);
     }
 }

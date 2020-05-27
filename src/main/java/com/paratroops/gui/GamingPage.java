@@ -111,7 +111,6 @@ public class GamingPage extends JPanel {
 
                 timer.restart();
                 timer.setRepeats(false);
-//                timer.stop();
 
             }else{
                 // do nothing
@@ -241,7 +240,6 @@ public class GamingPage extends JPanel {
                 }
             }
 
-//            troopUtils.sortByRank(blueSoldiers);
             //按照军衔顺序依次点亮，selectLeader 函数已经排过序，不需要再进行调用
 
             randTimer = new Timer(1000, new ActionListener() {
@@ -276,7 +274,6 @@ public class GamingPage extends JPanel {
         public void actionPerformed(ActionEvent e) {
             shownIndex = 0;
             randTimer.stop();
-//            map.showAuthenticationResult();
             map.showAuthenticationResult();
             //弹出提示，选择多个士兵
             JOptionPane.showMessageDialog(null, "请选择多个士兵来打开补给");
