@@ -305,7 +305,6 @@ public class Map extends JPanel {
         stringBuilder.append(shownSoldier.getRank());
         stringBuilder.append(".png");
         URL picWithRankForRank = App.class.getClassLoader().getResource(stringBuilder.toString());
-//        System.out.println(stringBuilder.toString());
 
         shownForRand.picWithRankForRank(picWithRankForRank);
 
@@ -326,7 +325,6 @@ public class Map extends JPanel {
         stringBuilder.append(shownSoldier.getRank());
         stringBuilder.append(".png");
         URL picWithRankForRank = App.class.getClassLoader().getResource(stringBuilder.toString());
-//        System.out.println(stringBuilder.toString());
 
         shownForRand.picWithRankForRank(picWithRankForRank);
     }
@@ -336,14 +334,16 @@ public class Map extends JPanel {
      */
     public void clearSortResult() {
         //清空排序那边的结果
-        for (int i=1;i<12;i++){
+        for (int i=1, cols=gameDto.getSIZE()[1]; i<cols; i++){
             Block redOne = getTailPosition(i);
-            if(redOne.getComponentCount()>2){
-                redOne.remove(2);       // 删除草地上的士兵
+            if(redOne.containsSoldier()) {
+                redOne.remove(redOne.getSoldier().getPicture());        // 删除草地上的士兵
+                redOne.resetBlock();
             }
             Block blueOne = getHeadPosition(i);
-            if(blueOne.getComponentCount()>2){
-                blueOne.remove(2);       // 删除草地上的士兵
+            if(blueOne.containsSoldier()) {
+                blueOne.remove(blueOne.getSoldier().getPicture());       // 删除草地上的士兵
+                blueOne.resetBlock();
             }
             redOne.repaint();
             blueOne.repaint();
