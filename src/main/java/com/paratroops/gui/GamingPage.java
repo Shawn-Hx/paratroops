@@ -340,7 +340,6 @@ public class GamingPage extends JPanel {
         public void actionPerformed(ActionEvent e) {
             shownIndex = 0;
             randTimer.stop();
-//            map.showAuthenticationResult();
             map.showAuthenticationResult();
             map.clearSortResult();
         }
@@ -382,12 +381,7 @@ public class GamingPage extends JPanel {
 
 
         returnButton.addActionListener(e -> {
-//            shownIndex = 0;
-//            randTimer.stop();
-//            map.clearSortResult();
-//            map.showAuthenticationResult();
             identificationFinal.doClick();
-//            map.resetBlockSelection();
             window.toTitle();
             if (map.getHeadPosition(0).getComponentCount()>1){
                 map.getHeadPosition(0).remove(0);

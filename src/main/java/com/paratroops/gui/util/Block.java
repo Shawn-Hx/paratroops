@@ -50,7 +50,7 @@ public class Block extends JLayeredPane {
     public Block(int x, int y) {
         this.setBounds(x, y, BLOCK_WIDTH, BLOCK_HEIGHT);
         Picture pic = new Picture(BLOCK_URL, 0, 0, BLOCK_WIDTH, BLOCK_HEIGHT);
-        this.add(pic, Integer.valueOf(0));           // 把草地图片放在最底层
+        this.add(pic, Integer.valueOf(0), 1);           // 把草地图片放在最底层
         this.repaint();
     }
 
