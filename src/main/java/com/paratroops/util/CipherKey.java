@@ -24,6 +24,6 @@ public class CipherKey {
     }
 
     public String keyToString() {
-        return "(" + key[0].toString() + "," + key[1].toString() + ")";
+        return "(" + key[0].toString(16) + "," + key[1].toString(16) + ")";
     }
 }

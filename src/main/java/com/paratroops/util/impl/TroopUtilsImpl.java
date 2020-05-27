@@ -2,6 +2,7 @@ package com.paratroops.util.impl;
 
 import Jama.Matrix;
 import com.paratroops.entity.Soldier;
+import com.paratroops.util.CipherKey;
 import com.paratroops.util.CipherUtils;
 import com.paratroops.util.TroopUtils;
 
@@ -49,6 +50,7 @@ public class TroopUtilsImpl implements TroopUtils {
     /**
      * 获取日志字符串
      */
+    @Override
     public String getLog() {
         return logger.toString();
     }
@@ -56,6 +58,7 @@ public class TroopUtilsImpl implements TroopUtils {
     /**
      * 清空日志字符串
      */
+    @Override
     public void clearLog() {
         logger.delete(0, logger.length());
     }
@@ -63,10 +66,16 @@ public class TroopUtilsImpl implements TroopUtils {
     @Override
     public void dispatchPublicKeys(List<? extends Soldier> soldiers) {
         for (Soldier soldier : soldiers) {
+            CipherKey publicKey = soldier.getPublicKey();
+//            CipherKey privateKey = soldier.getPrivateKey();
+            logger.append("军衔").append(soldier.getRank()).append("伞兵")
+                    .append("公钥为：")
+                    .append(publicKey.keyToString()).append(SPLITTER);
             for (Soldier teammate : soldiers) {
                 soldier.addTeamMate(teammate);
             }
         }
+        logger.append("均已取得队友公钥").append(SPLITTER);
     }
 
     @Override
@@ -83,6 +92,7 @@ public class TroopUtilsImpl implements TroopUtils {
         for (int i = 1; i < coefficients.length; i++) {
             coefficients[i] = 1 + random.nextInt(256);
         }
+        logger.append("分配开箱密钥对：");
         // 分发
         int num = 1;
         for (Soldier soldier : soldiers) {
@@ -94,7 +104,11 @@ public class TroopUtilsImpl implements TroopUtils {
             }
             soldier.setBoxKeyPair(new long[]{x, y});
             num++;
+            logger.append("(").append(x).append(",").append(y).append(")");
+//            if (logger.length() > 50)
+//                logger.append(SPLITTER);
         }
+        logger.append(SPLITTER);
     }
 
     @Override
@@ -277,8 +291,8 @@ public class TroopUtilsImpl implements TroopUtils {
     /**
      * byte[]取模（byte[]存储16进制的ASCII码）
      *
-     * @param dividend
-     * @param dividor
+     * @param dividend  被除数
+     * @param dividor   除数
      * @return int
      */
     private int byteMod(byte[] dividend, int dividor) {
@@ -490,12 +504,14 @@ public class TroopUtilsImpl implements TroopUtils {
     @Override
     public boolean openBox(List<? extends Soldier> soldiers, int boxKey) {
         int n = soldiers.size();
+        logger.append(n).append("人参与开箱，持有开箱密钥分别为：").append(SPLITTER);
         double[][] coefficient = new double[n][n];
         double[][] bb = new double[n][1];
         // 构造系数矩阵及右端向量
         for (int i = 0; i < n; i++) {
             Soldier soldier = soldiers.get(i);
             long[] keyPair = soldier.getBoxKeyPair();
+            logger.append("(").append(keyPair[0]).append(",").append(keyPair[1]).append(")");
             bb[i][0] = keyPair[1];
 
             coefficient[i][0] = 1;
@@ -503,18 +519,26 @@ public class TroopUtilsImpl implements TroopUtils {
                 coefficient[i][j] = coefficient[i][j - 1] * keyPair[0];
             }
         }
+        logger.append(SPLITTER);
         // 求解线性方程组
         Matrix A = new Matrix(coefficient);
         Matrix b = new Matrix(bb);
         if (A.det() == 0)
-            // 系数矩阵为奇异阵直接返回false
+            // 系数矩阵为奇异阵直接返回false（正常情况下不会发生）
             return false;
         Matrix x = A.solve(b);
         // 获取构造的多项式的常数项值
         double f0 = x.getArray()[0][0];
+        long secret = Math.round(f0);
+        logger.append("解得秘密为").append(secret).append(SPLITTER);
 
-        // 四舍五入取整后比较
-        return Math.round(f0) == boxKey;
+        if (secret == boxKey) {
+            logger.append("解得秘密与初始值(").append(boxKey).append(")相同，开箱成功").append(SPLITTER);
+            return true;
+        } else {
+            logger.append("解得秘密与初始值(").append(boxKey).append(")不同，开箱失败").append(SPLITTER);
+            return false;
+        }
     }
 
 }
