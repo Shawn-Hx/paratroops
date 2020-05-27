@@ -7,7 +7,7 @@ public class CipherKey {
     /**
      * key[0]:  N (=p*q)
      * key[1]:  d if private key
-     *          e if public key
+     * e if public key
      */
     private BigInteger[] key;
 
@@ -21,5 +21,9 @@ public class CipherKey {
 
     public void setKey(BigInteger[] key) {
         this.key = key;
+    }
+
+    public String keyToString() {
+        return "(" + key[0].toString() + "," + key[1].toString() + ")";
     }
 }
