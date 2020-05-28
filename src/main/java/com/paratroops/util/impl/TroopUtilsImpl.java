@@ -436,9 +436,9 @@ public class TroopUtilsImpl implements TroopUtils {
             if (arr_votes[i] > arr_votes[max_index]) {
                 max_index = i;
             }
-            System.out.println("第 " + (i + 1) + " 位候选者投票数量" + arr_votes[i]);
+            logger.append("第 ").append(i + 1).append(" 位候选者投票数量: ").append(arr_votes[i]).append(SPLITTER);
         }
-        System.out.println("得票数最高的候选者：" + (max_index + 1));
+        logger.append("得票数最高的候选者: ").append(max_index + 1).append(SPLITTER);
         return max_index;
     }
 
@@ -483,9 +483,10 @@ public class TroopUtilsImpl implements TroopUtils {
                 voter.add(soldiers.get(i));
             }
         }
-        System.out.println("—————————————— 电子投票算法开始 ————————————————");
-        System.out.println("有" + candidate.size() + "个士兵具有最高军衔");
-        System.out.println("有" + voter.size() + "个士兵进行投票");
+        logger.append("—————————————— 电子投票算法开始 ————————————————").append(SPLITTER);
+        logger.append("有").append(candidate.size()).append("个士兵具有最高军衔").append(SPLITTER);
+        logger.append("有").append(voter.size()).append("个士兵进行投票").append(SPLITTER);
+
         // 没有投票的士兵，进行随机选取
         if (voter.size() == 0) {
             Random random = new Random();
@@ -493,7 +494,7 @@ public class TroopUtilsImpl implements TroopUtils {
         }
         // 进行电子投票
         int id = electronicVoting(candidate, voter);
-        System.out.println("—————————————— 电子投票算法结束 ————————————————");
+        logger.append("—————————————— 电子投票算法结束 ————————————————").append(SPLITTER);
 
         Soldier leader = soldiers.get(id);
         soldiers.remove(id);
