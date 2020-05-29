@@ -31,6 +31,11 @@ public class GamingPage extends JPanel {
     private static final long serialVersionUID = 1L;
 
     /**
+     * 控制台显示的文字行数
+     */
+    private static final int CONSOLE_ROWS = 20;
+
+    /**
      * 每个队伍的士兵数量
      */
     private int numSoldiersEach = 0;
@@ -61,7 +66,7 @@ public class GamingPage extends JPanel {
 
     private TroopUtils troopUtils = TroopUtilsImpl.getInstance();
 
-    JTextArea console = new JTextArea("这是控制台，算法输出在这里");
+    private JTextArea console = new JTextArea("这是控制台，算法输出在这里");
 
     private class RankCompareEachListener implements ActionListener{
         @Override
@@ -362,10 +367,9 @@ public class GamingPage extends JPanel {
         selectMultiSoldiers.addActionListener(new SelectMultiSoldiers());
         JButton openBox = new JButton("打开补给");
         openBox.addActionListener(new OpenBoxListener());
-        // 下方控制台
 
-        console.setRows(6);
         JScrollPane scroll = new JScrollPane(console);
+        console.setRows(CONSOLE_ROWS);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); 
         procedurePanel.setLayout(new GridLayout(7,1));
         procedurePanel.add(identificationEach);
@@ -405,6 +409,8 @@ public class GamingPage extends JPanel {
      * 根据{@code gameDto}重新初始化地图
      */
     public void newGame() {
+        console.setText("");                        // 清空控制台输出
+        troopUtils.clearLog();                      // 清空日志对象
         map.clearMap();                             // 清空地图上的士兵
         gameDto.init();                             // 重新生成队伍数据
         List<JSoldier> allSoldiers = gameDto.getRedTeamDTO().getJSoldierList();
