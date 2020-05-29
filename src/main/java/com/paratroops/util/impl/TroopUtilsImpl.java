@@ -131,22 +131,20 @@ public class TroopUtilsImpl implements TroopUtils {
         String s;
         //若余数数组不符合要求，则重做
         do {
-            s = "Requester's rank is " + requester.getRank() + ", ";
-            s += "Responser's rank is " + responser.getRank() + "." + SPLITTER;
+            s = "发起方的军衔是：" + requester.getRank() + "， ";
+            s += "接收方的军衔是：" + responser.getRank() + "。" + SPLITTER;
 
             //生成随机数
             Random rand = new Random();
             int randnum = rand.nextInt(1000) + 2500;
             byte[] message = intToByteArray(randnum);
-            s += "Requester select a random number " + randnum + ", ";
+            s += "发起方选择随机数：" + randnum + "， ";
 
             //发起方用回复方的公钥对随机数加密后，减去发起方的军衔
             byte[] randnumInt = cipherUtils.encrypt(message, responser.getPublicKey());
             byte[] randnumsub = byteSubtract(randnumInt, requester.getRank());
             byte[] randnumAdd;
-            s += "then encrypt it with Responser's public key " + responser.getPublicKey().keyToString() +
-                    " and subtract his own rank. ";
-            s += "Finally he sends the result to Responser." + SPLITTER;
+            s += "并用接收方的公钥" + responser.getPublicKey().keyToString() + "加密，减去自己的军衔后将结果发送给接收方。" + SPLITTER;
 
             //回复方生成大素数prime
             prime = BigInteger.probablePrime(10, new Random()).intValue();
@@ -161,29 +159,30 @@ public class TroopUtilsImpl implements TroopUtils {
                 byte[] tmp = cipherUtils.decrypt(randnumAdd, responser.getPrivateKey());
                 result[i] = byteMod(tmp, prime);
             }
-            s += "Responser add the result from 0 to 9 individually and decrypt with own private key " +
-                    responser.getPrivateKey().keyToString() + " mod a random prime " + prime + "." + SPLITTER;
+            s += "接收方对接收到的数分别加0-9，并用自己的私钥" + responser.getPrivateKey().keyToString() + "解密，再对随机质数" + prime + "取模。" + SPLITTER;
 
         } while (!isLegal(result));
 
-        //回复方将余数数组中大于等于自己军衔索引的元素加1，再发给发起方
-        for (int j = responser.getRank(); j < 10; j++) {
+        //回复方将余数数组中大于自己军衔索引的元素加1，再发给发起方
+        for (int j = responser.getRank() + 1; j < 10; j++) {
             result[j]++;
         }
-        s += "For each element whose index is not smaller than Responser's rank, add 1. Responser sends the results back to Requestor." + SPLITTER;
+        s += "接收方对索引大于自己军衔的余数数组元素做加一操作后，将结果发回给发起方。" + SPLITTER;
 
 
         //若发起方的军衔索引元素与randnum%prime相等，是则发起方军衔不大于回复方，否则大于
         if (result[requester.getRank()] == compare) {
-            s += "Element " + requester.getRank() + " equals to rand number mod prime. ";
-            s += "Requester's rank is not larger than Responsor's.";
+            s += "发起方发现第" + requester.getRank() + "个元素等于随机数模质数，";
+            s += "因此发起方的军衔不大于接收方。";
             logger.append(s);
+            System.out.println(s);
             return false;
         }
         else {
-            s += "Element " + requester.getRank() + " doesn't equal to rand number mod prime. ";
-            s += "Requester's rank is larger than Responsor's.";
+            s += "发起方发现第" + requester.getRank() + "个元素不等于随机数模质数，";
+            s += "因此发起方的军衔大于接收方。";
             logger.append(s);
+            System.out.println(s);
             return true;
         }
     }
@@ -291,8 +290,8 @@ public class TroopUtilsImpl implements TroopUtils {
     /**
      * byte[]取模（byte[]存储16进制的ASCII码）
      *
-     * @param dividend  被除数
-     * @param dividor   除数
+     * @param dividend 被除数
+     * @param dividor  除数
      * @return int
      */
     private int byteMod(byte[] dividend, int dividor) {
@@ -536,7 +535,8 @@ public class TroopUtilsImpl implements TroopUtils {
         if (secret == boxKey) {
             logger.append("解得秘密与初始值(").append(boxKey).append(")相同，开箱成功").append(SPLITTER);
             return true;
-        } else {
+        }
+        else {
             logger.append("解得秘密与初始值(").append(boxKey).append(")不同，开箱失败").append(SPLITTER);
             return false;
         }

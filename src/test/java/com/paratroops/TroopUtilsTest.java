@@ -33,10 +33,13 @@ public class TroopUtilsTest extends TestCase {
         Soldier req = new Soldier(4, cipherUtils);
         Soldier res1 = new Soldier(6, cipherUtils);
         Soldier res2 = new Soldier(1, cipherUtils);
+        Soldier res3 = new Soldier(4, cipherUtils);
         boolean comp1 = troopUtils.compareRank(req, res1);
         boolean comp2 = troopUtils.compareRank(req, res2);
+        boolean comp3 = troopUtils.compareRank(req, res3);
         assertFalse(comp1);
         assertTrue(comp2);
+        assertFalse(comp3);
     }
 
     public void testSortByRank() {
