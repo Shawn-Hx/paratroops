@@ -336,14 +336,15 @@ public class Map extends JPanel {
         //清空排序那边的结果
         for (int i=1, cols=gameDto.getSIZE()[1]; i<cols; i++){
             Block redOne = getTailPosition(i);
-            if(redOne.containsSoldier()) {
-                redOne.remove(redOne.getSoldier().getPicture());        // 删除草地上的士兵
-                redOne.resetBlock();
+            if (redOne.getComponentCount() == 3){
+                redOne.remove(0); //删除草地上的士兵
+//                redOne.resetBlock();
             }
             Block blueOne = getHeadPosition(i);
-            if(blueOne.containsSoldier()) {
-                blueOne.remove(blueOne.getSoldier().getPicture());       // 删除草地上的士兵
-                blueOne.resetBlock();
+            if (blueOne.getComponentCount() == 3){
+                blueOne.remove(0); //删除草地上的士兵
+//                blueOne.resetBlock();
+
             }
             redOne.repaint();
             blueOne.repaint();

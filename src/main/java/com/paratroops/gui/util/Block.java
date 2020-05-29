@@ -198,6 +198,6 @@ public class Block extends JLayeredPane {
     public void picWithRankForRank(URL picWithRankForRank) {
         Picture SolderWithRankForSort = new Picture(picWithRankForRank,0,0,BLOCK_WIDTH, BLOCK_HEIGHT);
         this.add(SolderWithRankForSort, Integer.valueOf(2));
-        setSoldier(soldier);
+//        setSoldier(soldier);
     }
 }
