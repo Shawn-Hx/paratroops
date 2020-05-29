@@ -173,14 +173,14 @@ public class TroopUtilsImpl implements TroopUtils {
         //若发起方的军衔索引元素与randnum%prime相等，是则发起方军衔不大于回复方，否则大于
         if (result[requester.getRank()] == compare) {
             s += "发起方发现第" + requester.getRank() + "个元素等于随机数模质数，";
-            s += "因此发起方的军衔不大于接收方。";
+            s += "因此发起方的军衔不大于接收方。" + SPLITTER;
             logger.append(s);
             System.out.println(s);
             return false;
         }
         else {
             s += "发起方发现第" + requester.getRank() + "个元素不等于随机数模质数，";
-            s += "因此发起方的军衔大于接收方。";
+            s += "因此发起方的军衔大于接收方。" + SPLITTER;
             logger.append(s);
             System.out.println(s);
             return true;
