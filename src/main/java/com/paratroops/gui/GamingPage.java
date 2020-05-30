@@ -33,7 +33,7 @@ public class GamingPage extends JPanel {
     /**
      * 控制台显示的文字行数
      */
-    private static final int CONSOLE_ROWS = 20;
+    private static final int CONSOLE_ROWS = 7;
 
     /**
      * 每个队伍的士兵数量
@@ -413,6 +413,7 @@ public class GamingPage extends JPanel {
         troopUtils.clearLog();                      // 清空日志对象
         map.clearMap();                             // 清空地图上的士兵
         gameDto.init();                             // 重新生成队伍数据
+        console.setText(troopUtils.getLog());
         List<JSoldier> allSoldiers = gameDto.getRedTeamDTO().getJSoldierList();
         allSoldiers.addAll(gameDto.getBlueTeamDTO().getJSoldierList());
         placeSoldiers(allSoldiers);                 // 统一计算红蓝两队士兵的初始位置
