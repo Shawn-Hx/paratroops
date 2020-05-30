@@ -431,13 +431,20 @@ public class TroopUtilsImpl implements TroopUtils {
         }
 
         int max_index = 0;
+        boolean duplicate = false;
         for (int i = 0; i < candidate_num; i++) {
             if (arr_votes[i] > arr_votes[max_index]) {
                 max_index = i;
+                duplicate = false;
+            }else if (i > 0 && arr_votes[i] == arr_votes[max_index]){
+                duplicate = true;
             }
             logger.append("第 ").append(i + 1).append(" 位候选者投票数量: ").append(arr_votes[i]).append(SPLITTER);
         }
-        logger.append("得票数最高的候选者: ").append(max_index + 1).append(SPLITTER);
+        if (duplicate){
+            logger.append("有多名候选者得票数最高，选择 ID 最小的候选者").append(SPLITTER);
+        }
+        logger.append("选择的 Leader 为: ").append(max_index + 1).append(" 号候选者").append(SPLITTER);
         return max_index;
     }
 
@@ -467,7 +474,7 @@ public class TroopUtilsImpl implements TroopUtils {
     @Override
     public Soldier selectLeader(List<Soldier> soldiers) {
         sortByRank(soldiers);
-        if (soldiers.size() < 2 || !compareRank(soldiers.get(1), soldiers.get(0))) {
+        if (soldiers.size() < 2 || compareRank(soldiers.get(0), soldiers.get(1))) {
             return soldiers.get(0);
         }
         // 获取 rank 最高的所有士兵
@@ -475,7 +482,7 @@ public class TroopUtilsImpl implements TroopUtils {
         List<Soldier> voter = new ArrayList<>();
         candidate.add(soldiers.get(0));
         for (int i = 1; i < soldiers.size(); i++) {
-            if (compareRank(soldiers.get(i), soldiers.get(0))) {
+            if (!compareRank(soldiers.get(0), soldiers.get(i))) {
                 candidate.add(soldiers.get(i));
             }
             else {
