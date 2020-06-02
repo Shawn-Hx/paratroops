@@ -477,7 +477,6 @@ public class TroopUtilsImpl implements TroopUtils {
         if (soldiers.size() < 2 || compareRank(soldiers.get(0), soldiers.get(1))) {
             return soldiers.get(0);
         }
-
         // 获取 rank 最高的所有士兵
         List<Soldier> candidate = new ArrayList<>();
         List<Soldier> voter = new ArrayList<>();
