@@ -52,7 +52,7 @@ public class TroopUtilsImpl implements TroopUtils {
      */
     @Override
     public String getLog() {
-        return logger.toString();
+        return logger.append("\n").append("\n").toString();
     }
 
     /**
@@ -492,7 +492,6 @@ public class TroopUtilsImpl implements TroopUtils {
         logger.append("—————————————— 电子投票算法开始 ————————————————").append(SPLITTER);
         logger.append("有").append(candidate.size()).append("个士兵具有最高军衔").append(SPLITTER);
         logger.append("有").append(voter.size()).append("个士兵进行投票").append(SPLITTER);
-
         // 没有投票的士兵，进行随机选取
         if (voter.size() == 0) {
             Random random = new Random();
@@ -501,7 +500,7 @@ public class TroopUtilsImpl implements TroopUtils {
         // 进行电子投票
         int id = electronicVoting(candidate, voter);
         logger.append("—————————————— 电子投票算法结束 ————————————————").append(SPLITTER);
-
+        System.out.println(logger.toString());
         Soldier leader = soldiers.get(id);
         soldiers.remove(id);
         soldiers.add(0, leader);
