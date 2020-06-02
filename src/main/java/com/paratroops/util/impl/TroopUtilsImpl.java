@@ -52,7 +52,7 @@ public class TroopUtilsImpl implements TroopUtils {
      */
     @Override
     public String getLog() {
-        return logger.toString();
+        return logger.append("\n").append("\n").toString();
     }
 
     /**
@@ -477,6 +477,7 @@ public class TroopUtilsImpl implements TroopUtils {
         if (soldiers.size() < 2 || compareRank(soldiers.get(0), soldiers.get(1))) {
             return soldiers.get(0);
         }
+
         // 获取 rank 最高的所有士兵
         List<Soldier> candidate = new ArrayList<>();
         List<Soldier> voter = new ArrayList<>();
@@ -501,7 +502,7 @@ public class TroopUtilsImpl implements TroopUtils {
         // 进行电子投票
         int id = electronicVoting(candidate, voter);
         logger.append("—————————————— 电子投票算法结束 ————————————————").append(SPLITTER);
-
+        System.out.println(logger.toString());
         Soldier leader = soldiers.get(id);
         soldiers.remove(id);
         soldiers.add(0, leader);
