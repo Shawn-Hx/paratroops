@@ -493,7 +493,6 @@ public class TroopUtilsImpl implements TroopUtils {
         logger.append("—————————————— 电子投票算法开始 ————————————————").append(SPLITTER);
         logger.append("有").append(candidate.size()).append("个士兵具有最高军衔").append(SPLITTER);
         logger.append("有").append(voter.size()).append("个士兵进行投票").append(SPLITTER);
-
         // 没有投票的士兵，进行随机选取
         if (voter.size() == 0) {
             Random random = new Random();
